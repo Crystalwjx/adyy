@@ -297,7 +297,7 @@ i.zp-ic > img {
 }
 
 .am-picker .am-ul .am-item li.active {
-    color: #09CA61;
+    color: #7f48b4;
     font-size: 18px;
     font-weight: 500;
 }
@@ -447,3 +447,21 @@ input:focus:-ms-input-placeholder { color:transparent !important; }
 
 /* WebKit浏览器 */
 textarea:focus::-webkit-input-placeholder { color:transparent !important; }
+
+.hash-calendar {
+  background: #8E58C2;
+  color: #fff !important;
+  .calendar_content {
+    background: #8E58C2;
+    .calendar_week {
+      background: #8E58C2;
+      color: #fff !important;
+    }
+    /deep/.calendar_group_li {
+      background: #8E58C2;
+      .calendar_day_checked {
+        background: #CD9AFF;
+      }
+    }
+  }
+}

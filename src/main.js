@@ -9,6 +9,11 @@ import { getApplicationStatus } from '@/service/getData'
 import router from './router'
 import vuePicker from './vue-picker'
 import VueLazyload from 'vue-lazyload'
+import vueHashCalendar from 'vue-hash-calendar'
+// 引入组件CSS样式
+import 'vue-hash-calendar/lib/vue-hash-calendar.css'
+// 注册组件库
+Vue.use(vueHashCalendar)
 Vue.use(vuePicker)
 Vue.use(VueLazyload)
 Vue.config.productionTip = false

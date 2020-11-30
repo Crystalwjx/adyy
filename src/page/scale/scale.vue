@@ -280,7 +280,7 @@ export default {
     font-weight: 400;
     color: #fff;
     margin: 1.1093rem auto 0;
-    background: #09ca61;
+    background: #7f48b4;
     box-shadow: 0rem 0.1706rem 0.3413rem 0.128rem rgba(146, 248, 193, 1);
   }
 }

@@ -105,12 +105,7 @@
               <div>{{item}}</div>
             </div>
           </div>
-          <div v-if="isVideo">
-            <button style="margin-top:3.7546rem;margin-bottom:1.4506rem;"
-                    class="next-question"
-                    @click="toScale">下一步</button>
-          </div>
-          <div v-else>
+          <div>
             <button v-if="nextScale"
                     style="margin-top:3.7546rem;margin-bottom:1.4506rem;"
                     class="next-question"
@@ -128,15 +123,11 @@
     <alert-tip v-if="showAlert"
                @closeTip="closeTip"
                :alertText="alertText"></alert-tip>
-    <video-tip v-if="showVideoTip"
-               @closeVideoTip="closeVideoTip"
-               :alertText="alertText"></video-tip>
   </div>
 </template>
 <script>
 import Vue from 'vue'
 import alertTip from '../../components/common/alertTip'
-import videoTip from '../../components/common/videoTip'
 import addPoint from '../../components/common/addPoint'
 import { postStartTest, getTestInfo, postFinishTest, getTestReport, getTestList } from '@/service/getData'
 import { getStore, setStore } from '@/config/mUtils'
@@ -185,14 +176,11 @@ export default {
       },
       flag: false,
       showAlert: false,
-      showVideoTip: false,
-      alertText: null,
-      isVideo: false
+      alertText: null
     }
   },
   components: {
     alertTip,
-    videoTip,
     addPoint
   },
   mounted () {
@@ -315,8 +303,6 @@ export default {
       let res = await postFinishTest(this.uid, getStore('test_id'), this.resultArr.length, this.resultArr)
       if (res.code == 0) {
         this.hasCompleted = false
-        this.isVideo = res.isVideo
-        setStore('type', res.isVideo)
         this.getReport()
       } else {
         this.showAlert = true
@@ -356,18 +342,10 @@ export default {
       this.hasCompleted = true
       this.resultStatus = 2
       this.currentIndex = 0
-      if (this.isVideo) {
-        this.showVideoTip = true
-      } else {
-        this.$router.replace({ path: '/scale/' + this.testScaleId })
-      }
+      this.$router.replace({ path: '/scale/' + this.testScaleId })
     },
     toScale () {
-      if (this.isVideo) {
-        this.showVideoTip = true
-      } else {
-        this.$router.replace('/scale')
-      }
+      this.$router.replace('/scale')
     },
     pickTime (item) {
       let cType = this.content[this.currentIndex].item_type
@@ -495,9 +473,6 @@ export default {
     closeTip () {
       this.showAlert = false
       this.$router.replace('/scale')
-    },
-    closeVideoTip () {
-      this.showVideoTip = false
     },
     handlerSetValue (item, index) {
       this.range = index
@@ -635,7 +610,7 @@ export default {
     font-weight: 400;
     margin: 1.8773rem auto 1.4506rem;
     color: #fff;
-    background: #09ca61;
+    background: #7f48b4;
     box-shadow: 0rem 0.1706rem 0.3413rem 0.128rem rgba(146, 248, 193, 1);
   }
   .btn-next {

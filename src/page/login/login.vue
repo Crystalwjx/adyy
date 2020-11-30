@@ -432,7 +432,7 @@ export default {
     box-shadow: 0px 4px 8px 3px rgba(146, 248, 193, 1);
     border-radius: 1.024rem;
     color: #fff;
-    background: #09ca61;
+    background: #7f48b4;
     position: absolute;
     bottom: 1.664rem;
     left: 3.626rem;

@@ -1,11 +1,11 @@
 <template>
   <div class="footer-nav">
-    <div v-if="/^\/relate/.test($route.path)"
+    <div v-if="$route.path==='/record'"
          class="on-page"><img src="../../images/ic_knowledge_on.png">
       <p>每日记录</p>
     </div>
     <div v-else
-         @click="$router.push('/relate')"><img src="../../images/ic_knowledge_off.png">
+         @click="$router.push('/record')"><img src="../../images/ic_knowledge_off.png">
       <p>每日记录</p>
     </div>
     <div v-if="$route.path==='/scale'"

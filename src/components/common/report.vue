@@ -106,7 +106,7 @@ export default {
       font-weight: 400;
       margin: 1.8773rem auto 1.4506rem;
       color: #fff;
-      background: #09ca61;
+      background: #7f48b4;
       box-shadow: 0rem 0.1706rem 0.3413rem 0.128rem rgba(146, 248, 193, 1);
     }
   }

@@ -5,9 +5,7 @@ import scale from '@/page/scale/scale'
 import scaleDetails from '@/page/scale/scaleDetails'
 import notFound from '@/page/antijump/notfound'
 import Complete from '@/page/finished/complete'
-import Relate from '@/page/relate/relate'
-import infoDetails from '@/page/relate/infoDetails'
-import Video from '@/page/video/video.vue'
+import Record from '@/page/record/record'
 import User from '@/page/user/user'
 Vue.use(Router)
 
@@ -37,21 +35,10 @@ export default new Router({
       path: '/complete',
       component: Complete
     },
-    //已完成量表
-    {
-      path: '/video',
-      component: Video
-    },
     //相关知识列表
     {
-      path: '/relate',
-      component: Relate
-    },
-    //相关知识
-    {
-      path: '/relates',
-      component: infoDetails,
-      name: 'relates'
+      path: '/record',
+      component: Record
     },
     //我的
     {

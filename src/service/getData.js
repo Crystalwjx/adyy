@@ -91,20 +91,3 @@ export const getKnowledgeBanner = () => fetch('/knowledge/banner');
  * 相关知识详情
  */
 export const postKnowledgeDetails = (uid, cmsItemId) => fetch('/knowledge/createpoint', { uid, cmsItemId }, 'POST');
-
-/**
- * 获取视频
- */
-export const postVideo = (testId, types) => fetch('/video/index', { testId, types }, 'POST');
-
-/**
- * 获取答题解析
- */
-export const postVideoOperation = (uid, testId, current, results, videoId, totalPoint) => fetch('/video/operation', {
-  uid,
-  testId,
-  current,
-  results,
-  videoId,
-  totalPoint
-}, 'POST');
