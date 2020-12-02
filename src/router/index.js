@@ -5,6 +5,8 @@ import scale from '@/page/scale/scale'
 import scaleDetails from '@/page/scale/scaleDetails'
 import notFound from '@/page/antijump/notfound'
 import Complete from '@/page/finished/complete'
+import Relate from '@/page/relate/relate'
+import infoDetails from '@/page/relate/infoDetails'
 import Record from '@/page/record/record'
 import User from '@/page/user/user'
 Vue.use(Router)
@@ -44,6 +46,16 @@ export default new Router({
     {
       path: '/user',
       component: User
+    },
+    {
+      path: '/relate',
+      component: Relate
+    },
+    //相关知识
+    {
+      path: '/relates',
+      component: infoDetails,
+      name: 'relates'
     },
     {
       path: '/other',

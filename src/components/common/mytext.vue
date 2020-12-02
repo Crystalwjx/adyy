@@ -1,20 +1,38 @@
 <template>
   <form class="loginForm">
     <section class="input_container appeal_container">
-      <textarea :placeholder="text"
-                :value="value"
-                @input="handleInput">
+      <textarea v-model="info"
+                :placeholder="text">
       </textarea>
-      <div class="last-char"> {{value.length}}/200 </div>
+      <div class="last-char"> {{info.length}}/200 </div>
     </section>
   </form>
 </template>
 <script>
 export default {
-  props: ['value', 'text'],
-  methods: {
-    handleInput () {
-      this.$emit('input', event.target.value)
+  props: ['inputInfo', 'text'],
+  // props: {
+  //   inputInfo: {
+  //     type: String,
+  //     default: 'aaa'
+  //   },
+  //   text: {
+  //     type: String,
+  //     default: null
+  //   }
+  // },
+  data () {
+    return {
+      info: ''
+    }
+  },
+  watch: {
+    inputInfo (val) {
+      console.log(this.inputInfo)
+      this.info = val
+    },
+    info (val) {
+      this.$emit('update:inputInfo', val)
     }
   }
 }

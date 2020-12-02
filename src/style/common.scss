@@ -462,6 +462,9 @@ textarea:focus::-webkit-input-placeholder { color:transparent !important; }
       .calendar_day_checked {
         background: #CD9AFF;
       }
+      /deep/.calendar_first_today {
+        font-size: 0.55rem;
+      }
     }
   }
 }

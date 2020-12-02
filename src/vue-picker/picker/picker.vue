@@ -244,6 +244,7 @@ export default {
   margin: 0;
   list-style: none;
   margin-top: 90px;
+  margin-bottom: 90px;
 }
 .am-picker .am-ul ul.end {
   transition: transform 0.2s;

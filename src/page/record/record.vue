@@ -2,10 +2,14 @@
   <div class="record-page">
     <vue-hash-calendar :visible.sync="show_calendar"
                        :showTodayButton="false"
+                       format="YY-MM-DD"
                        pickerType="date"
                        :isShowAction="false"
                        :isShowWeekView="true"
-                       :scrollChangeDate="false"></vue-hash-calendar>
+                       :scrollChangeDate="false"
+                       markType="circle"
+                       :markDate="markDateArr"
+                       @change="handleDateChange"></vue-hash-calendar>
     <ul class="record-con">
       <li class="record-item">
         <div class="item-head">心情记录</div>
@@ -14,8 +18,8 @@
           <div style="display:flex;align-items:center;">
             <p class="text">抑郁</p>
             <div ref="progress"
-                 class="progress">
-              <!-- @touchmove="move"> -->
+                 class="progress"
+                 @touchmove="move">
               <div ref="progress_bg"
                    class="progress_bg"
                    @click="handleClick($event)">
@@ -23,16 +27,19 @@
                      class="progress_bar" />
               </div>
               <div ref="vr_btn"
-                   class="vr-box">
-                <!-- @touchstart="down"
-                   @touchend="up"> -->
+                   class="vr-box"
+                   @touchstart="down"
+                   @touchend="up">
               </div>
               <div ref="progress_btn"
                    class="progress_btn" />
             </div>
             <p class="text">兴奋</p>
           </div>
-          <mytext v-model="recordForm.content"
+          <div v-if="hasSubmit"
+               class="submitted">{{recordForm.mood}}</div>
+          <mytext v-else
+                  :inputInfo.sync="recordForm.mood"
                   :text="text" />
         </div>
       </li>
@@ -40,37 +47,52 @@
         <div class="item-head">服药情况</div>
         <div class="item-detail">
           <div class="item-title">今天您是否已经按时按剂量服药了？或者说有把握会按时按剂量服药？</div>
-          <div class="my-button"
-               @click="handleCheck">{{buttonText}}</div>
+          <div v-if="hasSubmit"
+               class="submitted">{{recordForm.drug}}</div>
+          <div v-else
+               class="my-button"
+               @click="handleCheck('drug')">{{buttonText}}</div>
         </div>
       </li>
       <li class="record-item">
         <div class="item-head">感恩日记</div>
         <div class="item-detail">
           <div class="item-title">今天有没有什么人做了什么事帮助、照顾、支持、安慰、关心了你？如果有，那么把这些人和这些事写出来吧。</div>
-          <mytext v-model="recordForm.content"
+          <div v-if="hasSubmit"
+               class="submitted">{{recordForm.diary}}</div>
+          <mytext v-else
+                  :inputInfo.sync="recordForm.diary"
                   :text="text" />
         </div>
       </li>
       <li class="record-item">
         <div class="item-head">其他</div>
         <div class="item-detail">
-          <div class="items-bottom">
+          <div class="items-bottom"
+               @click="handleCheck('time')">
             <div class="item-left">感觉自己昨日大约睡了几个小时？</div>
-            <img class="item-right"
+            <div v-if="recordForm.time"
+                 class="item-right">{{recordForm.time}}</div>
+            <img v-else
+                 class="item-right"
                  src="../../images/right-arrow.png">
-            <!-- <div class="item-right">></div> -->
           </div>
-          <div class="items-bottom">
+          <div class="items-bottom"
+               @click="handleCheck('sport')">
             <div class="item-left">是否运动？</div>
-            <img class="item-right"
+            <div v-if="recordForm.sport"
+                 class="item-right">{{recordForm.sport}}</div>
+            <img v-else
+                 class="item-right"
                  src="../../images/right-arrow.png">
-            <!-- <div class="item-right">></div> -->
           </div>
-          <div class="items-bottom">
+          <div class="items-bottom"
+               @click="handleCheck('drink')">
             <div class="item-left">有没有吸食咖啡、香烟、酒精、毒品等神经物质？</div>
-            <!-- <div class="item-right">></div> -->
-            <img class="item-right"
+            <div v-if="recordForm.drink"
+                 class="item-right">{{recordForm.drink}}</div>
+            <img v-else
+                 class="item-right"
                  src="../../images/right-arrow.png">
           </div>
           <div class="my-button"
@@ -79,39 +101,78 @@
         </div>
       </li>
     </ul>
+    <alert-tip v-if="showAlert"
+               @closeTip="closeTip"
+               :alertText="alertText"></alert-tip>
     <foot-nav />
   </div>
 </template>
 <script>
 import footNav from '../../components/footer/nav'
 import mytext from '../../components/common/mytext'
+import alertTip from '../../components/common/alertTip'
 export default {
   components: {
+    alertTip,
     footNav,
     mytext
   },
   data () {
     return {
       show_calendar: true,
-      canMove: true,
       tag: false,
       left: 0,
       bgleft: 0,
-      text: 0,
       bgwidth: 0,
       charCur: 0,
       recordForm: {
-        content: '',
-        content1: ''
+        date: '',
+        happy: '',
+        happyText: '',
+        mood: '',
+        drug: '',
+        diary: '',
+        time: '',
+        sport: '',
+        drink: ''
       },
       buttonText: '选择',
       text: '你觉得是最近或今天的什么事情让你的心情受到了影响？',
-      hasSubmit: false
+      hasSubmit: false,
+      showAlert: false,
+      markDateArr: [
+        {
+          color: 'red',
+          date: ['2020-12-1']
+        }
+      ]
     }
   },
+  mounted () {
+  },
   methods: {
+    getCurrentDate () {
+      var date = new Date()
+      var y = date.getFullYear();
+      var m = date.getMonth() + 1;
+      m = m < 10 ? '0' + m : m;
+      var d = date.getDate();
+      d = d < 10 ? ('0' + d) : d;
+      return y + '-' + m + '-' + d;
+    },
+    handleDateChange (date) {
+      this.recordForm.date = date
+    },
     handleSubmit () {
-      console.log(this.recordForm)
+      if (this.recordForm.drug.length > 200 || this.recordForm.diary.length > 200) {
+        this.showAlert = true
+        this.alertText = '字数超出限制'
+        return
+      }
+      this.hasSubmit = true
+    },
+    closeTip () {
+      this.showAlert = false
     },
     handleClick (e) {
       this.canMove = true
@@ -127,23 +188,74 @@ export default {
         this.$refs.progress_btn.style.left = this.left + 'px'
         this.$refs.vr_btn.style.left = this.left - 20 + 'px'
         this.$refs.progress_bar.style.width = this.left + 'px'
-        this.text = parseInt((this.left / this.bgwidth) * 100)
+        this.recordForm.happyText = parseInt((this.left / this.bgwidth) * 100)
+        this.recordForm.happy = this.left
       }
     },
-    handleCheck () {
-      let option = [
-        { name: '是' },
-        { name: '否' },
-        { name: '不确定' },
-      ]
+    down (e) {
+      this.bgwidth = this.$refs.progress.offsetWidth
+      this.canMove = true
+      this.ox = e.targetTouches[0].pageX - this.left
+      this.tag = true
+    },
+    move (e) {
+      this.bgwidth = this.$refs.progress.offsetWidth
+      if (this.tag) {
+        this.left = e.targetTouches[0].pageX - this.ox
+        if (this.left <= 0) {
+          this.left = 0
+        } else if (this.left > this.bgwidth) {
+          this.left = this.bgwidth
+        }
+        this.$refs.progress_btn.style.left = this.left + 'px'
+        this.$refs.vr_btn.style.left = this.left - 20 + 'px'
+        this.$refs.progress_bar.style.width = this.left + 'px'
+        this.recordForm.happyText = parseInt((this.left / this.bgwidth) * 100)
+        this.recordForm.happy = this.left
+      }
+    },
+    up () {
+      this.tag = false
+    },
+    handleCheck (type) {
+      let option = []
+      let titles = ''
+      if (type == 'drug') {
+        option = [
+          { name: '是' },
+          { name: '否' },
+          { name: '不确定' }
+        ]
+        titles = '选择服药情况'
+      } else if (type == 'time') {
+        for (var i = 0; i < 25; i++) {
+          option.push({ name: i })
+        }
+        titles = '睡眠时间(小时)'
+      } else if (type == 'sport') {
+        option = [
+          { name: '已做' },
+          { name: '计划做' },
+          { name: '不好说' }
+        ]
+        titles = '选择是否运动'
+      } else if (type == 'drink') {
+        option = [
+          { name: '是' },
+          { name: '没有' },
+          { name: '不确定' }
+        ]
+        titles = '选择是否吸食'
+      }
       this.$singlepicker({
-        title: '选择服药情况',
+        title: titles,
         option: option,
         change: (value) => {
           console.log(value)
         }
       }).then((value) => {
         this.buttonText = value
+        this.recordForm[type] = value
       }).catch((reason) => {
         console.log('catch:', reason);
       });
@@ -189,7 +301,7 @@ export default {
           .item-left {
             width: 83%;
           }
-          .item-right {
+          img.item-right {
             width: 1.024rem;
             height: 1.024rem;
           }
@@ -210,6 +322,11 @@ export default {
           border-radius: 24px;
           border: 1px solid #7f48b4;
           @include fz;
+        }
+        .submitted {
+          padding-top: 0.6rem;
+          font-size: 0.6826rem;
+          color: #0058e3;
         }
       }
     }

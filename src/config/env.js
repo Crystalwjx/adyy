@@ -14,11 +14,11 @@ let wxAuthUrl = '';
 
 
 if (process.env.NODE_ENV == 'development') {
-  baseUrl = '';
+  baseUrl = 'http://adsf.linkwill.cn';
   // wxAuthUrl = 'http://localhost:8586/#/home?openid=oXu2T0vJyLfL_3zt6oR2tBbRuu1E';
 
 } else if (process.env.NODE_ENV == 'production') {
-  baseUrl = '';
+  baseUrl = 'http://adsf.linkwill.cn';
   wxAuthUrl = baseUrl + '/wx/index';
 }
 
