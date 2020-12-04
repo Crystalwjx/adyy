@@ -1,0 +1,174 @@
+.player-tip {
+  background: #427afa;
+  position:fixed;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+  z-index:200;
+}
+.curriculum-info {
+  padding: 0.6rem;
+  font-size: 0.5rem;
+  color: #fff;
+  .day {
+    height: 1.32rem;
+    text-align: center;
+    margin-top: 0.3rem;
+    font-size: 1.024rem;
+    letter-spacing: 0.29px;
+  }
+  .name {
+    height: 0.81rem;
+    text-align: center;
+    font-size: 0.6rem;
+    letter-spacing: 0.29px;
+  }
+  .intro {
+    width: 10.7rem;
+    height: 10.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    margin: 0.6rem auto;
+    img{
+      width: 9.557rem;
+      height: 9.557rem;
+      border-radius: 50%;
+      border: 0.341rem solid #8fb0fc;
+    }
+  }
+  .desc {
+    height: 2.43rem;
+    text-align: center;
+    font-size: 0.6rem;
+    letter-spacing: 0.31px;
+    .music-name{
+      font-size: 0.853rem;
+    }
+  }
+  .player {
+    .progress {
+      position: relative;
+      padding: 1rem 2rem;
+      height: 1rem;
+      .line {
+        position: relative;
+        height: 0.341rem;
+        border-radius: 0.341rem;
+        border: 1px solid rgba(36, 38, 47, 0.15);
+        box-shadow: inset -1px 1px 2px 0 rgba(0, 0, 0, 0.5);
+        .mask {
+          background: #fff;
+          height: 100%;
+          width: 0;
+          border-radius: 0.341rem;
+        }
+        .bar {
+          position: absolute;
+          top: 50%;
+          margin-left: -0.3rem;
+          margin-top: -0.3rem;
+          width: 0.6rem;
+          height: 0.6rem;
+          background: #fff;
+          box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.4);
+          border-radius: 0.6rem;
+        }
+      }
+      .stime,
+      .etime {
+        position: absolute;
+        top: 50%;
+        height: 0.7rem;
+        margin-top: -0.2rem;
+      }
+      .stime {
+        left: 0.682rem;
+      }
+      .etime {
+        right: 0.512rem;
+      }
+    }
+    .controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1rem;
+      margin-top: 0.83rem;
+      .control-item {
+        width: 1.79rem;
+        height: 1.79rem;
+        background: #0f3792;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .play-ctrl {
+        width: 2.55rem;
+        height: 2.55rem;
+        margin: 0 1.3rem;
+      }
+    }
+  }
+}
+audio {
+  display: none;
+}
+
+.intro img{
+  -webkit-transition-property: -webkit-transform;
+    -webkit-transition-duration: 1s;
+    -moz-transition-property: -moz-transform;
+    -moz-transition-duration: 1s;
+    -webkit-animation: rotate 3s linear infinite;
+    -moz-animation: rotate 3s linear infinite;
+    -o-animation: rotate 3s linear infinite;
+    animation: rotate 30s linear infinite;
+ }
+ @-webkit-keyframes rotate{from{-webkit-transform: rotate(0deg)}
+     to{-webkit-transform: rotate(360deg)}
+ }
+ @-moz-keyframes rotate{from{-moz-transform: rotate(0deg)}
+     to{-moz-transform: rotate(359deg)}
+ }
+ @-o-keyframes rotate{from{-o-transform: rotate(0deg)}
+     to{-o-transform: rotate(359deg)}
+ }
+ @keyframes rotate{from{transform: rotate(0deg)}
+     to{transform: rotate(359deg)}
+ }
+
+.mint-spinner-snake {
+  -webkit-animation: mint-spinner-rotate 0.8s infinite linear;
+  animation: mint-spinner-rotate 0.8s infinite linear;
+  border: 0.2rem solid transparent;
+  border-radius: 1.8rem;
+}
+@-webkit-keyframes mint-spinner-rotate {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes mint-spinner-rotate {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}

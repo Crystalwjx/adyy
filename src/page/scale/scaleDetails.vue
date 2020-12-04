@@ -559,7 +559,7 @@ export default {
     width: 7.3386rem;
     height: 2rem;
     background: #fff;
-    box-shadow: 0rem 0.1706rem 0.3413rem 0.128rem rgba(146, 248, 193, 1);
+    box-shadow: 0rem 0.1706rem 0.3413rem 0.128rem rgba(187, 117, 255, 0.3);
     border-radius: 1.024rem;
     border: 2px solid #7f48b4;
     font-size: 0.853rem;
@@ -611,7 +611,7 @@ export default {
     margin: 1.8773rem auto 1.4506rem;
     color: #fff;
     background: #7f48b4;
-    box-shadow: 0rem 0.1706rem 0.3413rem 0.128rem rgba(146, 248, 193, 1);
+    box-shadow: 0rem 0.1706rem 0.3413rem 0.128rem rgba(187, 117, 255, 0.3);
   }
   .btn-next {
     bottom: 1.4506rem;
@@ -624,7 +624,7 @@ export default {
     background: #fff;
     color: #7f48b4;
     border: 2px solid #7f48b4;
-    box-shadow: 0rem 0.1706rem 0.3413rem 0.128rem rgba(146, 248, 193, 1);
+    box-shadow: 0rem 0.1706rem 0.3413rem 0.128rem rgba(187, 117, 255, 0.3);
     bottom: 1.6213rem;
   }
   .completed {

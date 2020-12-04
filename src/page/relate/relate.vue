@@ -59,12 +59,24 @@
         </div>
       </div>
     </div>
+    <player v-if="showPlayPage"
+            @gotoclose="gotoclose">
+      <span slot="headTitle">测试音频</span>
+      <span slot="title">第 1 天</span>
+      <span slot="slogan">Mute</span>
+      <template slot="musicDesc">
+        <p>如果您无法表达你的想法</p>
+        <p>那只能说明你还不够了解它</p>
+        <p>－阿尔伯得。爱印寺但</p>
+      </template>
+    </player>
     <foot-nav></foot-nav>
   </div>
 </template>
 <script>
 import { getKnowledgeList, getKnowledgeBanner } from '@/service/getData'
 import footNav from '../../components/footer/nav'
+import player from '../../components/common/player'
 import { getStore } from '@/config/mUtils'
 export default {
   data () {
@@ -98,11 +110,13 @@ export default {
         upImg: 'arrow.png',
         refreshText: '刷新中...',
         refreshImg: 'arrow.png'
-      }
+      },
+      showPlayPage: false,
     }
   },
   components: {
-    footNav
+    footNav,
+    player
   },
   created () {
     if (document.querySelector('.down-tip')) {
@@ -119,21 +133,21 @@ export default {
       let res = await getKnowledgeBanner()
       if (res.code == 0) {
         self.banner = res.data.list
-        // self.timer = setInterval(() => {
-        //   self.bannerIndex++
-        //   if (self.bannerIndex >= res.data.list.length) {
-        //     self.bannerIndex = 0
-        //   }
-        // }, 3000)
       }
-      // let rdata = await getKnowledgeList(getStore('uid'))
-      let rdata = await getKnowledgeList('698')
+      let rdata = await getKnowledgeList(getStore('uid'))
       if (rdata.code == 0) {
         self.list = rdata.data.list
       }
     },
     toDetails (subitem) {
-      this.$router.push({ name: 'relates', params: { detail: subitem } })
+      if (true) {
+        this.showPlayPage = true
+      } else {
+        this.$router.push({ name: 'relates', params: { detail: subitem } })
+      }
+    },
+    gotoclose () {
+      this.showPlayPage = false
     },
     isTooLong (str) {
       if (str.length >= 35) {

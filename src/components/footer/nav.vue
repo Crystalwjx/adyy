@@ -1,19 +1,19 @@
 <template>
   <div class="footer-nav">
     <div v-if="$route.path==='/record'"
-         class="on-page"><img src="../../images/ic_knowledge_on.png">
+         class="on-page"><img src="../../images/ic_record_on.png">
       <p>每日记录</p>
     </div>
     <div v-else
-         @click="$router.push('/record')"><img src="../../images/ic_knowledge_off.png">
+         @click="$router.push('/record')"><img src="../../images/ic_record_off.png">
       <p>每日记录</p>
     </div>
     <div v-if="$route.path==='/scale'"
-         class="on-page"><img src="../../images/ic_mind_on.png">
+         class="on-page"><img src="../../images/ic_scale_on.png">
       <p>心理测查</p>
     </div>
     <div v-else
-         @click="$router.push('/scale')"><img src="../../images/ic_mind_off.png">
+         @click="$router.push('/scale')"><img src="../../images/ic_scale_off.png">
       <p>心理测查</p>
     </div>
     <div v-if="$route.path==='/user'"

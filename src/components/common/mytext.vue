@@ -2,6 +2,7 @@
   <form class="loginForm">
     <section class="input_container appeal_container">
       <textarea v-model="info"
+                :disabled="!hassubmit"
                 :placeholder="text">
       </textarea>
       <div class="last-char"> {{info.length}}/200 </div>
@@ -10,7 +11,7 @@
 </template>
 <script>
 export default {
-  props: ['inputInfo', 'text'],
+  props: ['inputInfo', 'text', 'hassubmit'],
   // props: {
   //   inputInfo: {
   //     type: String,

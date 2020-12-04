@@ -6,7 +6,6 @@
                        pickerType="date"
                        :isShowAction="false"
                        :isShowWeekView="true"
-                       :scrollChangeDate="false"
                        markType="circle"
                        :markDate="markDateArr"
                        @change="handleDateChange"></vue-hash-calendar>
@@ -36,9 +35,10 @@
             </div>
             <p class="text">兴奋</p>
           </div>
-          <div v-if="hasSubmit"
+          <div v-if="recordForm.hasSubmit"
                class="submitted">{{recordForm.mood}}</div>
           <mytext v-else
+                  :hassubmit="canSubmit"
                   :inputInfo.sync="recordForm.mood"
                   :text="text" />
         </div>
@@ -47,7 +47,7 @@
         <div class="item-head">服药情况</div>
         <div class="item-detail">
           <div class="item-title">今天您是否已经按时按剂量服药了？或者说有把握会按时按剂量服药？</div>
-          <div v-if="hasSubmit"
+          <div v-if="recordForm.hasSubmit"
                class="submitted">{{recordForm.drug}}</div>
           <div v-else
                class="my-button"
@@ -58,9 +58,10 @@
         <div class="item-head">感恩日记</div>
         <div class="item-detail">
           <div class="item-title">今天有没有什么人做了什么事帮助、照顾、支持、安慰、关心了你？如果有，那么把这些人和这些事写出来吧。</div>
-          <div v-if="hasSubmit"
+          <div v-if="recordForm.hasSubmit"
                class="submitted">{{recordForm.diary}}</div>
           <mytext v-else
+                  :hassubmit="canSubmit"
                   :inputInfo.sync="recordForm.diary"
                   :text="text" />
         </div>
@@ -95,7 +96,8 @@
                  class="item-right"
                  src="../../images/right-arrow.png">
           </div>
-          <div class="my-button"
+          <div v-if="canSubmit"
+               class="my-button"
                style="width:6.186rem;margin-top: 0;"
                @click="handleSubmit">保存记录</div>
         </div>
@@ -111,6 +113,7 @@
 import footNav from '../../components/footer/nav'
 import mytext from '../../components/common/mytext'
 import alertTip from '../../components/common/alertTip'
+import { setStore, getStore } from '@/config/mUtils'
 export default {
   components: {
     alertTip,
@@ -134,21 +137,29 @@ export default {
         diary: '',
         time: '',
         sport: '',
-        drink: ''
+        drink: '',
+        hasSubmit: false
       },
       buttonText: '选择',
       text: '你觉得是最近或今天的什么事情让你的心情受到了影响？',
-      hasSubmit: false,
       showAlert: false,
       markDateArr: [
         {
           color: 'red',
           date: ['2020-12-1']
         }
-      ]
+      ],
+      currentDate: null,
+      dailies: {}
+    }
+  },
+  computed: {
+    canSubmit () {
+      return this.recordForm.date == this.currentDate
     }
   },
   mounted () {
+    this.currentDate = this.getCurrentDate()
   },
   methods: {
     getCurrentDate () {
@@ -166,99 +177,109 @@ export default {
     handleSubmit () {
       if (this.recordForm.drug.length > 200 || this.recordForm.diary.length > 200) {
         this.showAlert = true
-        this.alertText = '字数超出限制'
+        this.alertText = '字数不能超过200'
         return
       }
-      this.hasSubmit = true
+      this.recordForm.hasSubmit = true
     },
     closeTip () {
       this.showAlert = false
     },
     handleClick (e) {
-      this.canMove = true
-      this.bgwidth = this.$refs.progress.offsetWidth
-      if (!this.tag) {
-        this.bgleft = this.$refs.progress_bg.getBoundingClientRect().left
-        this.left = e.pageX - this.bgleft
-        if (this.left <= 0) {
-          this.left = 0
-        } else if (this.left > this.bgwidth) {
-          this.left = this.bgwidth
+      if (this.canSubmit) {
+        this.canMove = true
+        this.bgwidth = this.$refs.progress.offsetWidth
+        if (!this.tag) {
+          this.bgleft = this.$refs.progress_bg.getBoundingClientRect().left
+          this.left = e.pageX - this.bgleft
+          if (this.left <= 0) {
+            this.left = 0
+          } else if (this.left > this.bgwidth) {
+            this.left = this.bgwidth
+          }
+          this.$refs.progress_btn.style.left = this.left + 'px'
+          this.$refs.vr_btn.style.left = this.left - 20 + 'px'
+          this.$refs.progress_bar.style.width = this.left + 'px'
+          this.recordForm.happyText = parseInt((this.left / this.bgwidth) * 100)
+          this.recordForm.happy = this.left
         }
-        this.$refs.progress_btn.style.left = this.left + 'px'
-        this.$refs.vr_btn.style.left = this.left - 20 + 'px'
-        this.$refs.progress_bar.style.width = this.left + 'px'
-        this.recordForm.happyText = parseInt((this.left / this.bgwidth) * 100)
-        this.recordForm.happy = this.left
       }
     },
     down (e) {
-      this.bgwidth = this.$refs.progress.offsetWidth
-      this.canMove = true
-      this.ox = e.targetTouches[0].pageX - this.left
-      this.tag = true
+      if (this.canSubmit) {
+        this.bgwidth = this.$refs.progress.offsetWidth
+        this.canMove = true
+        this.ox = e.targetTouches[0].pageX - this.left
+        this.tag = true
+      }
     },
     move (e) {
-      this.bgwidth = this.$refs.progress.offsetWidth
-      if (this.tag) {
-        this.left = e.targetTouches[0].pageX - this.ox
-        if (this.left <= 0) {
-          this.left = 0
-        } else if (this.left > this.bgwidth) {
-          this.left = this.bgwidth
+      if (this.canSubmit) {
+        this.bgwidth = this.$refs.progress.offsetWidth
+        if (this.tag) {
+          this.left = e.targetTouches[0].pageX - this.ox
+          if (this.left <= 0) {
+            this.left = 0
+          } else if (this.left > this.bgwidth) {
+            this.left = this.bgwidth
+          }
+          this.$refs.progress_btn.style.left = this.left + 'px'
+          this.$refs.vr_btn.style.left = this.left - 20 + 'px'
+          this.$refs.progress_bar.style.width = this.left + 'px'
+          this.recordForm.happyText = parseInt((this.left / this.bgwidth) * 100)
+          this.recordForm.happy = this.left
         }
-        this.$refs.progress_btn.style.left = this.left + 'px'
-        this.$refs.vr_btn.style.left = this.left - 20 + 'px'
-        this.$refs.progress_bar.style.width = this.left + 'px'
-        this.recordForm.happyText = parseInt((this.left / this.bgwidth) * 100)
-        this.recordForm.happy = this.left
       }
     },
     up () {
-      this.tag = false
+      if (this.canSubmit) {
+        this.tag = false
+      }
     },
     handleCheck (type) {
-      let option = []
-      let titles = ''
-      if (type == 'drug') {
-        option = [
-          { name: '是' },
-          { name: '否' },
-          { name: '不确定' }
-        ]
-        titles = '选择服药情况'
-      } else if (type == 'time') {
-        for (var i = 0; i < 25; i++) {
-          option.push({ name: i })
+      if (this.canSubmit) {
+        let option = []
+        let titles = ''
+        if (type == 'drug') {
+          option = [
+            { name: '是' },
+            { name: '否' },
+            { name: '不确定' }
+          ]
+          titles = '选择服药情况'
+        } else if (type == 'time') {
+          for (var i = 0; i < 25; i++) {
+            option.push({ name: i })
+          }
+          titles = '睡眠时间(小时)'
+        } else if (type == 'sport') {
+          option = [
+            { name: '已做' },
+            { name: '计划做' },
+            { name: '不好说' }
+          ]
+          titles = '选择是否运动'
+        } else if (type == 'drink') {
+          option = [
+            { name: '是' },
+            { name: '没有' },
+            { name: '不确定' }
+          ]
+          titles = '选择'
         }
-        titles = '睡眠时间(小时)'
-      } else if (type == 'sport') {
-        option = [
-          { name: '已做' },
-          { name: '计划做' },
-          { name: '不好说' }
-        ]
-        titles = '选择是否运动'
-      } else if (type == 'drink') {
-        option = [
-          { name: '是' },
-          { name: '没有' },
-          { name: '不确定' }
-        ]
-        titles = '选择是否吸食'
+        this.$singlepicker({
+          title: titles,
+          option: option,
+          change: (value) => {
+            console.log(value)
+          }
+        }).then((value) => {
+          this.buttonText = value
+          this.recordForm[type] = value
+        }).catch((reason) => {
+          console.log('catch:', reason);
+        });
       }
-      this.$singlepicker({
-        title: titles,
-        option: option,
-        change: (value) => {
-          console.log(value)
-        }
-      }).then((value) => {
-        this.buttonText = value
-        this.recordForm[type] = value
-      }).catch((reason) => {
-        console.log('catch:', reason);
-      });
     },
   }
 }

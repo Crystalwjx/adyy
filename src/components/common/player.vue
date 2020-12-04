@@ -7,10 +7,8 @@
           <img src='../../images/icons/ic_close@2x.png' />
         </i>
       </section>
-      <section class="title_head ellipsis">
-        <span class="title_text">
-          <slot name="headTitle"></slot>
-        </span>
+      <section class="title_head">
+        <slot name="headTitle"></slot>
       </section>
     </header>
     <section class="curriculum-info player-box">
@@ -48,10 +46,6 @@
             <img src="../../images/icons/ic_backward.png" />
           </div>
           <div class="control-item play-ctrl">
-            <!--
-            <div v-if="played && timeNow == 0"
-                 class="play-load mint-spinner-snake"></div>
-            -->
             <i v-if="played && timeNow == 0"
                class="zp-ic pause">
               <img src="../../images/icons/btn_pause_normal@2x.png">
@@ -87,10 +81,10 @@
 
 <script>
 import headTop from '../../components/header/head'
-import {
-  postCurriculemStart,
-  postCurriculemFinished,
-} from 'src/service/getData'
+// import {
+//   postCurriculemStart,
+//   postCurriculemFinished,
+// } from 'src/service/getData'
 
 export default {
   data () {
@@ -106,27 +100,17 @@ export default {
       }
     }
   },
-  props: ['musicInfo', 'isCurriculum', 'isHypnotic', 'isRelax', 'imgSrc'],
+  props: ['musicInfo', 'isCurriculum', 'imgSrc'],
   created () {
   },
-
   destroyed () {
   },
-
   beforeDestroyed () {
-    // this.removeEventListeners()
   },
-
   mounted () {
-    // this.addEventListeners()
     this.curriculum = this.musicInfo
     this.$refs.myAudio.src = this.musicInfo.media
   },
-
-  components: {
-    headTop
-  },
-
   computed: {
     progressCurr () {
       let m = ~~(this.timeNow / 60),
@@ -154,52 +138,52 @@ export default {
   },
 
   methods: {
-    async start () {
-      let id = this.musicInfo.id;
-      let res = await postCurriculemStart(id);
-      console.log('curriculum.start:', id)
-      if (res) {
-        if (res.code == 0 && !res.message) {
-          this.play(1)
-          this.patientCourseId = res.data.id
-        } else if (res.data && res.data.redirect == 1) {
-          this.showAlert = true;
-          this.alertText = '登录信息已过期，请重新登录';
-          this.alertHanlder = function () {
-            this.$router.push('/login');
-            return
-          }
-          return
-        } else if (res.msg) {
-          this.showAlert = true;
-          this.alertText = res.msg;
-          return
-        }
-      }
-    },
+    // async start () {
+    //   let id = this.musicInfo.id;
+    //   let res = await postCurriculemStart(id);
+    //   console.log('curriculum.start:', id)
+    //   if (res) {
+    //     if (res.code == 0 && !res.message) {
+    //       this.play(1)
+    //       this.patientCourseId = res.data.id
+    //     } else if (res.data && res.data.redirect == 1) {
+    //       this.showAlert = true;
+    //       this.alertText = '登录信息已过期，请重新登录';
+    //       this.alertHanlder = function () {
+    //         this.$router.push('/login');
+    //         return
+    //       }
+    //       return
+    //     } else if (res.msg) {
+    //       this.showAlert = true;
+    //       this.alertText = res.msg;
+    //       return
+    //     }
+    //   }
+    // },
 
-    async finished () {
-      let id = this.patientCourseId;
-      let res = await postCurriculemFinished(id);
-      console.log('curriculum.finished:', id)
-      if (res) {
-        if (res.code == 0 && !res.message) {
-          this.$router.replace({ path: '/encourage/curriculum/' + id })
-        } else if (res.data && res.data.redirect == 1) {
-          this.showAlert = true;
-          this.alertText = '登录信息已过期，请重新登录';
-          this.alertHanlder = function () {
-            this.$router.push('/login');
-            return
-          }
-          return
-        } else if (res.msg) {
-          this.showAlert = true;
-          this.alertText = res.msg;
-          return
-        }
-      }
-    },
+    // async finished () {
+    //   let id = this.patientCourseId;
+    //   let res = await postCurriculemFinished(id);
+    //   console.log('curriculum.finished:', id)
+    //   if (res) {
+    //     if (res.code == 0 && !res.message) {
+    //       this.$router.replace({ path: '/encourage/curriculum/' + id })
+    //     } else if (res.data && res.data.redirect == 1) {
+    //       this.showAlert = true;
+    //       this.alertText = '登录信息已过期，请重新登录';
+    //       this.alertHanlder = function () {
+    //         this.$router.push('/login');
+    //         return
+    //       }
+    //       return
+    //     } else if (res.msg) {
+    //       this.showAlert = true;
+    //       this.alertText = res.msg;
+    //       return
+    //     }
+    //   }
+    // },
 
     play (can) {
       const self = this;
@@ -212,54 +196,26 @@ export default {
         this.played = true
       }
     },
-
-    // songLengths 
     onCanpay () {
       this.timeDuration = parseInt(this.$refs.myAudio.duration);
       if (this.isCurriculum) {
         this.start();
       }
     },
-
-    // addEventListeners: function () {
-    //   const self = this;
-    //   self.$refs.myAudio.addEventListener('timeupdate', self._currentTime),
-    //   self.$refs.myAudio.addEventListener('canplay', self._durationTime)
-    // },
-    // removeEventListeners: function () {
-    //   const self = this;
-    //   self.$refs.myAudio.removeEventListener('timeupdate', self._currentTime)
-    //   self.$refs.myAudio.removeEventListener('canplay', self._durationTime)
-    // },
     onTimeupdate: function (res) {
-      // console.log('timeupdate', res)
       this.fuck = res.target.currentTime;
       this.timeNow = parseInt(res.target.currentTime)
     },
-
     onEnded: function () {
       console.log('onEnded')
-      if (this.isRelax) {
-        this.$router.push({ path: '/encourage/relax/' + this.musicInfo.id })
-      }
       if (this.isCurriculum) {
         this.finished();
       }
     },
-
-    // onLoadedmetadata: function (res) {
-    //   console.log('loadedmetadata', res)
-    //   this.fuck2 = res.target.duration;
-    //   this.timeDuration = parseInt(res.target.duration)
-    // },
     gotoclose () {
       this.$emit('gotoclose')
-    },
-    //点击图标刷新页面
-    reload () {
-      window.location.reload();
     }
-  },
+  }
 }
 
 </script>
@@ -267,31 +223,15 @@ export default {
 <style lang="scss" scoped>
 @import "../../style/mixin";
 @import "../../style/play";
-.msite_title {
-  @include center;
-  width: 50%;
-  color: #fff;
-  text-align: center;
-  margin-left: -0.5rem;
-  .title_text {
-    @include sc(0.75rem, #fff);
-    text-align: center;
-    display: block;
-  }
-}
 #head_top {
   background-color: #427afa;
   @include wh(100%, 2rem);
   position: relative;
+  @include fz;
 }
 
 .title_head {
-  @include center;
-  width: 70%;
-  text-align: center;
-  .title_text {
-    @include sc(0.768rem, #fff);
-  }
+  @include sc(0.768rem, #fff);
 }
 
 .head_goclose {

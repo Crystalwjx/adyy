@@ -13,6 +13,8 @@ import vueHashCalendar from 'vue-hash-calendar'
 // 引入组件CSS样式
 import 'vue-hash-calendar/lib/vue-hash-calendar.css'
 // 注册组件库
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts
 Vue.use(vueHashCalendar)
 Vue.use(vuePicker)
 Vue.use(VueLazyload)

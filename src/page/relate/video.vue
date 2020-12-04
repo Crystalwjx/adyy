@@ -17,14 +17,17 @@
          class="login-content video-con">
       <div class="title">{{videoTitle}} </div>
       <div class="video-play">
-        <div v-if="isError" class="loading">
+        <div v-if="isError"
+             class="loading">
           <span>视频加载失败</span>
         </div>
-        <div v-else-if="isFault&&!isError" class="loading">
+        <div v-else-if="isFault&&!isError"
+             class="loading">
           <img src="../../images/loading.gif">
           <span>视频加载中...</span>
         </div>
-        <div v-else id="youkuplayer"
+        <div v-else
+             id="youkuplayer"
              style="width:100%;height:8.2773rem;"></div>
       </div>
       <button @click="hasStartAnswer = 1"
@@ -202,7 +205,7 @@ export default {
         this.point = res.data.getPoint
         setTimeout(() => {
           this.increasePoints = false
-          this.point = 0 
+          this.point = 0
         }, 2000)
       }
       if (res.code == 0) {
@@ -225,23 +228,23 @@ export default {
           this.isFault = true
           this.timer = setInterval(() => {
             this.timeOut++
-            if(this.timeOut >= 10) {
+            if (this.timeOut >= 10) {
               this.isError = true
               clearInterval(this.timer)
             }
             new Promise((resolve, reject) => {
-                var player = new YKU.Player('youkuplayer', {
-                  client_id: 'd9cd24a7c53821e5',
-                  vid: res.data.video.video_id,
-                  newPlayer: true,
-                  events: {
-                    onPlayEnd: function () {
-                      self.playEnd = true
-                    }
+              var player = new YKU.Player('youkuplayer', {
+                client_id: 'd9cd24a7c53821e5',
+                vid: res.data.video.video_id,
+                newPlayer: true,
+                events: {
+                  onPlayEnd: function () {
+                    self.playEnd = true
                   }
-                })
-                document.getElementById('youkuplayer').style.width = 14.6773 + 'rem'
-              }
+                }
+              })
+              document.getElementById('youkuplayer').style.width = 14.6773 + 'rem'
+            }
             ).then(
               (res) => {
                 alert()
@@ -249,7 +252,7 @@ export default {
                 this.isFault = false
                 clearInterval(this.timer)
               },  // 成功
-              (err) => {console.log(err)} // 失败
+              (err) => { console.log(err) } // 失败
             )
           }, 1000)
         }
@@ -281,12 +284,12 @@ export default {
         })
         this.isRightChose = JSON.stringify(this.checkStatusList.sort()) === JSON.stringify(this.videoResultsAnalysis.correct.sort()) ? false : true
       }
-      if (!this.isRightChose && this.currentIndex !== this.content.length-1) {
+      if (!this.isRightChose && this.currentIndex !== this.content.length - 1) {
         this.cannotClick = true
         setTimeout(() => {
           this.nextQuestion()
         }, 500)
-      } else if (!this.isRightChose && this.currentIndex === this.content.length-1) {
+      } else if (!this.isRightChose && this.currentIndex === this.content.length - 1) {
         this.cannotClick = true
         setTimeout(() => {
           this.handlerFinish()
@@ -480,7 +483,7 @@ export default {
     width: 7.3386rem;
     height: 2rem;
     background: #fff;
-    box-shadow: 0rem 0.1706rem 0.3413rem 0.128rem rgba(146, 248, 193, 1);
+    box-shadow: 0rem 0.1706rem 0.3413rem 0.128rem rgba(187, 117, 255, 0.3);
     border-radius: 1.024rem;
     border: 2px solid #25b667;
     font-size: 0.853rem;
@@ -533,7 +536,7 @@ export default {
     margin: 1.28rem auto 0rem;
     color: #fff;
     background: #09ca61;
-    box-shadow: 0rem 0.1706rem 0.3413rem 0.128rem rgba(146, 248, 193, 1);
+    box-shadow: 0rem 0.1706rem 0.3413rem 0.128rem rgba(187, 117, 255, 0.3);
   }
   .button-return {
     margin-top: 1.8773rem;
@@ -549,7 +552,7 @@ export default {
     background: #fff;
     color: #25b667;
     border: 2px solid #25b667;
-    box-shadow: 0rem 0.1706rem 0.3413rem 0.128rem rgba(146, 248, 193, 1);
+    box-shadow: 0rem 0.1706rem 0.3413rem 0.128rem rgba(187, 117, 255, 0.3);
     bottom: 1.6213rem;
   }
 }

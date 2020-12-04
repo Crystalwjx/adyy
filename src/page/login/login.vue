@@ -364,9 +364,9 @@ export default {
     button {
       @include sc(0.5973rem, #fff);
       border-radius: 0.1706rem;
-      border: 1px solid #7f48b4;
+      border: 1px solid #b27de6;
       border-radius: 0.1706rem;
-      background-color: #7f48b4;
+      background-color: #b27de6;
       @include wh(4.1813rem, 1.536rem);
       margin-left: 0.256rem;
     }
@@ -429,7 +429,7 @@ export default {
   }
   .btn-submit {
     @include fc(7.3386rem, 2.0053rem);
-    box-shadow: 0px 4px 8px 3px rgba(146, 248, 193, 1);
+    box-shadow: 0px 4px 8px 3px rgba(187, 117, 255, 0.3);
     border-radius: 1.024rem;
     color: #fff;
     background: #7f48b4;

@@ -8,6 +8,7 @@ import Complete from '@/page/finished/complete'
 import Relate from '@/page/relate/relate'
 import infoDetails from '@/page/relate/infoDetails'
 import Record from '@/page/record/record'
+import Doctor from '@/page/user/doctor'
 import User from '@/page/user/user'
 Vue.use(Router)
 
@@ -46,6 +47,11 @@ export default new Router({
     {
       path: '/user',
       component: User
+    },
+    //医生
+    {
+      path: '/doctor',
+      component: Doctor
     },
     {
       path: '/relate',
