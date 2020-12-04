@@ -143,12 +143,7 @@ export default {
       buttonText: '选择',
       text: '你觉得是最近或今天的什么事情让你的心情受到了影响？',
       showAlert: false,
-      markDateArr: [
-        {
-          color: 'red',
-          date: ['2020-12-1']
-        }
-      ],
+      markDateArr: [],
       currentDate: null,
       dailies: {}
     }
@@ -172,7 +167,21 @@ export default {
       return y + '-' + m + '-' + d;
     },
     handleDateChange (date) {
-      this.recordForm.date = date
+      let month = date.split('-')[1]
+      if (Object.keys(this.dailies).length && getStore('month') && month == getStore('month')) {
+        this.recordForm = this.dailies[date]
+      } else {
+        setStore('month', month)
+        // 调接口(一个月的值赋给this.dailies)
+        // let dates = Object.keys(this.dailies)
+        let dates = ['2020-12-3']
+        this.markDateArr = [
+          {
+            color: 'red',
+            date: dates
+          }
+        ]
+      }
     },
     handleSubmit () {
       if (this.recordForm.drug.length > 200 || this.recordForm.diary.length > 200) {
