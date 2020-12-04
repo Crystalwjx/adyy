@@ -61,6 +61,9 @@ export default {
       color: #848484;
       font-size: 0.68rem;
     }
+    textarea:disabled {
+      background: #fff;
+    }
     .last-char {
       position: absolute;
       right: 0.5rem;
