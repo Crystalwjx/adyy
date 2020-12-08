@@ -18,7 +18,7 @@
             <p class="text">抑郁</p>
             <div ref="progress"
                  class="progress"
-                 @touchmove="move">
+                 @touchmove="move($event)">
               <div ref="progress_bg"
                    class="progress_bg"
                    @click="handleClick($event)">
@@ -27,7 +27,7 @@
               </div>
               <div ref="vr_btn"
                    class="vr-box"
-                   @touchstart="down"
+                   @touchstart="down($event)"
                    @touchend="up">
               </div>
               <div ref="progress_btn"
@@ -174,13 +174,20 @@ export default {
     async getData () {
       let res = await getRecordsearch(this.currentDate, 1)
       if (res.code == 0) {
-        this.dailies = res.data
-        this.recordForm = this.dailies[this.currentDate]
-        this.$forceUpdate()
+        if (Object.keys(res.data).length) {
+          this.dailies = res.data
+          this.recordForm = this.dailies[this.currentDate]
+          this.$forceUpdate()
+        }
       } else {
         this.showAlert = true
         this.alertText = res.msg || res.message
       }
+      setTimeout(() => {
+        this.$refs.progress_btn.style.left = this.recordForm.happy + 'px'
+        this.$refs.vr_btn.style.left = this.recordForm.happy - 20 + 'px'
+        this.$refs.progress_bar.style.width = this.recordForm.happy + 'px'
+      }, 0)
     },
     getCurrentDate () {
       var date = new Date()
@@ -453,6 +460,16 @@ export default {
     cursor: pointer;
     border: 2px #fff solid;
     box-sizing: border-box;
+  }
+  .vr-box {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0);
+    position: absolute;
+    left: -20px;
+    top: -10px;
+    z-index: 100;
   }
 }
 </style>
