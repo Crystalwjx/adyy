@@ -2,30 +2,58 @@
   <div class="alet_container">
     <div class="alet_box">
       <div class="alet_option">
-        <span @click="closeTip">取消</span>
-        <span style="color:#7f48b4;font-weight:600;">发送</span>
+        <span @click="closeDtip">取消</span>
+        <span style="color:#7f48b4;font-weight:600;"
+              @click="handleSubmit">发送</span>
       </div>
       <textarea v-model="order"
                 class="alet_text"></textarea>
       <div class="alet_len">{{order.length}}/200</div>
     </div>
+    <alert-tip v-if="showAlert"
+               @closeTip="closeTip"
+               :alertText="alertText"></alert-tip>
   </div>
 </template>
 
 <script>
+import { postEnjoinCreate } from '@/service/getData'
+import alertTip from './alertTip'
+
 export default {
+  components: {
+    alertTip
+  },
   data () {
     return {
+      showAlert: false,
+      alertText: null,
       order: ''
     }
   },
   mounted () {
 
   },
-  props: ['alertText'],
   methods: {
+    async handleSubmit () {
+      if (this.order.length > 200) {
+        this.showAlert = true
+        this.alertText = '字数不能超过200'
+      } else {
+        let res = await postEnjoinCreate(1, this.order)
+        if (res.code == 0) {
+          this.closeDtip()
+        } else {
+          this.showAlert = true
+          this.alertText = res.msg || res.message
+        }
+      }
+    },
+    closeDtip () {
+      this.$emit('closeDtip')
+    },
     closeTip () {
-      this.$emit('closeTip')
+      this.showAlert = false
     }
   }
 }

@@ -29,7 +29,6 @@ export default {
   },
   watch: {
     inputInfo (val) {
-      console.log(this.inputInfo)
       this.info = val
     },
     info (val) {

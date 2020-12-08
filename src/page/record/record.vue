@@ -114,6 +114,7 @@ import footNav from '../../components/footer/nav'
 import mytext from '../../components/common/mytext'
 import alertTip from '../../components/common/alertTip'
 import { setStore, getStore } from '@/config/mUtils'
+import { getRecordsearch, postRecordCreate, postRecordUpdate } from '@/service/getData'
 export default {
   components: {
     alertTip,
@@ -155,8 +156,19 @@ export default {
   },
   mounted () {
     this.currentDate = this.getCurrentDate()
+    this.getData()
   },
   methods: {
+    async getData () {
+      let res = await getRecordsearch(this.currentDate, 1)
+      if (res.code == 0) {
+        this.dailies = res.data
+        this.recordForm = this.dailies[this.currentDate]
+      } else {
+        this.showAlert = true
+        this.alertText = res.msg || res.message
+      }
+    },
     getCurrentDate () {
       var date = new Date()
       var y = date.getFullYear();
@@ -167,14 +179,14 @@ export default {
       return y + '-' + m + '-' + d;
     },
     handleDateChange (date) {
+      this.recordForm.date = date
       let month = date.split('-')[1]
       if (Object.keys(this.dailies).length && getStore('month') && month == getStore('month')) {
         this.recordForm = this.dailies[date]
       } else {
         setStore('month', month)
-        // 调接口(一个月的值赋给this.dailies)
-        // let dates = Object.keys(this.dailies)
-        let dates = ['2020-12-3']
+        this.getData()
+        let dates = Object.keys(this.dailies)
         this.markDateArr = [
           {
             color: 'red',
@@ -183,13 +195,44 @@ export default {
         ]
       }
     },
-    handleSubmit () {
+    async handleSubmit () {
       if (this.recordForm.drug.length > 200 || this.recordForm.diary.length > 200) {
         this.showAlert = true
         this.alertText = '字数不能超过200'
         return
       }
-      this.recordForm.hasSubmit = true
+      var flag = true
+      for (var i in this.recordForm) {
+        if (this.recordForm[i] === '') {
+          console.log(i)
+          flag = false
+          break
+        }
+      }
+      if (!flag) {
+        console.log(this.recordForm.hasSubmit)
+        // if (this.recordForm.hasSubmit) {
+        //   let response = await postRecordUpdate(1, this.currentDate, this.recordForm)
+        //   if (response.code == 0) {
+        //     this.getData()
+        //   } else {
+        //     this.showAlert = true
+        //     this.alertText = response.msg || response.message
+        //   }
+        // } else {
+        //   this.recordForm.hasSubmit = true
+        //   let res = await postRecordCreate(1, this.recordForm)
+        //   if (res.code == 0) {
+        //     this.getData()
+        //   } else {
+        //     this.showAlert = true
+        //     this.alertText = res.msg || res.message
+        //   }
+        // }
+      } else {
+        this.showAlert = true
+        this.alertText = '请填写完整记录'
+      }
     },
     closeTip () {
       this.showAlert = false

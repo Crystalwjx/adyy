@@ -1,28 +1,34 @@
 <template>
   <div class="doctor-page">
-    <div v-if="true"
+    <div v-if="enjoinData.length"
          class="doctor-content">
-      <div v-if="true"
-           class="items doctor">
-        <div class="image">医</div>
-        <div class="content">
-          <div class="time newinfo">
-            <p>2020-11-12 昨天</p>
-            <p>新消息</p>
+      <div class="doctor-items"
+           v-for="(item,index) in enjoinData"
+           :key="index">
+        <div v-if="item.type == 1"
+             class="items doctor">
+          <div class="image">医</div>
+          <div class="content">
+            <div class="time"
+                 :class="{'newinfo': item.is_see == 0}">
+              <p>{{item.date}}{{item.day}}</p>
+              <p>{{item.seeName}}</p>
+            </div>
+            <div class="dialog">{{item.content}}</div>
           </div>
-          <div class="dialog">本次药品请及时服用。若已经按时服用，请及时填写每日记录</div>
         </div>
-      </div>
-      <div v-else
-           class="items user">
-        <div class="content">
-          <div class="time newinfo">
-            <p>2020-11-12 昨天</p>
-            <p>新消息</p>
+        <div v-else
+             class="items user">
+          <div class="content">
+            <div class="time"
+                 :class="{'newinfo': item.is_see == 0}">
+              <p>{{item.date}}{{item.day}}</p>
+              <p>{{item.seeName}}</p>
+            </div>
+            <div class="dialog">{{item.content}}</div>
           </div>
-          <div class="dialog">本次药品请及时服用。若已经按时服用，请及时填写每日记录</div>
+          <div class="image">我</div>
         </div>
-        <div class="image">我</div>
       </div>
     </div>
     <div v-else
@@ -33,26 +39,52 @@
     <div class="contact-doctor"
          @click="showOrderPage = true">咨询医生</div>
     <add-order v-if="showOrderPage"
-               @closeTip="closeTip"></add-order>
+               @closeDtip="closeDtip"></add-order>
+    <alert-tip v-if="showAlert"
+               @closeTip="closeTip"
+               :alertText="alertText"></alert-tip>
     <foot-nav />
   </div>
 </template>
 <script>
 import footNav from '../../components/footer/nav'
 import addOrder from '../../components/common/addOrder'
+import alertTip from '../../components/common/alertTip'
+import { getEnjoinList } from '@/service/getData'
+import { getStore } from '@/config/mUtils'
 export default {
   components: {
+    alertTip,
     addOrder,
     footNav
   },
+  mounted () {
+    this.getData()
+  },
   data () {
     return {
+      showAlert: false,
+      alertText: null,
+      enjoinData: [],
       showOrderPage: false
     }
   },
   methods: {
-    closeTip () {
+    async getData () {
+      let res = await getEnjoinList(getStore('uid'))
+      if (res.code == 0) {
+        this.enjoinData = res.data
+      } else {
+        this.showAlert = true
+        this.alertText = res.msg || res.message
+      }
+    },
+    closeDtip () {
       this.showOrderPage = false
+      this.getData()
+    },
+    closeTip () {
+      this.showAlert = false
     }
   }
 }

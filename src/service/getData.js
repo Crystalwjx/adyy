@@ -73,11 +73,6 @@ export const mobileCode = (phone, scene) => fetch('/verifycode/send', {
 export const getTestHistory = (uid) => fetch('/test/history', { uid });
 
 /**
- * 我的信息
- */
-export const getUserInfo = (uid) => fetch('/user/info', { uid });
-
-/**
  * 相关知识列表
  */
 export const getKnowledgeList = (uid) => fetch('/knowledge/list', { uid });
@@ -100,9 +95,24 @@ export const getRecordsearch = (date, uid) => fetch('/record/search', { date, ui
 /**
  * 获取医嘱信息 Type: 1: 医生 2: 我
  */
-export const getEnjoinList = () => fetch('/enjoin/list');
+export const getEnjoinList = (uid) => fetch('/enjoin/list', { uid });
 
 /**
  * 添加医嘱信息
  */
 export const postEnjoinCreate = (uid, content) => fetch('/enjoin/create', { uid, content }, 'POST');
+
+/**
+ * 我的信息
+ */
+export const getUserInfo = (uid) => fetch('/user/info', { uid });
+
+/**
+ * 添加每日记录
+ */
+export const postRecordCreate = (uid, content) => fetch('/record/create', { uid, content }, 'POST');
+
+/**
+ * 修改每日记录
+ */
+export const postRecordUpdate = (uid, date, content) => fetch('/record/update', { uid, date, content }, 'POST');

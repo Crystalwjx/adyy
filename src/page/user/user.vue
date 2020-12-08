@@ -5,10 +5,10 @@
         <div class="user-left">
           <img :src="patientInfo.headimgurl">
         </div>
-        <div class="user-name">王大同</div>
+        <div class="user-name">{{patientInfo.nickname}}</div>
       </div>
       <div class="user-right">
-        <p>积分 <span>105</span></p>
+        <p>积分 <span>{{patientInfo.point}}</span></p>
       </div>
     </div>
     <div class="echart-con"
@@ -20,9 +20,10 @@
 
     </div>
     <div class="hospital-con">
-      <div class="item-info">医院：鼓楼街道社区卫生服务中心</div>
-      <div class="item-info">电话：010-68765432</div>
-      <div class="item-info">医生：王晓燕</div>
+      <div class="item-info">医院：{{hospital}}</div>
+      <div v-if="tel"
+           class="item-info">电话：{{tel}}</div>
+      <div class="item-info">医生：{{mydoctor}}</div>
     </div>
     <div class="button-con">
       <button class="btn-answer"
@@ -30,11 +31,15 @@
       <button class="btn-answer"
               @click="$router.push('/doctor')">查看医嘱</button>
     </div>
+    <alert-tip v-if="showAlert"
+               @closeTip="closeTip"
+               :alertText="alertText"></alert-tip>
     <foot-nav></foot-nav>
   </div>
 </template>
 <script>
 import footNav from '../../components/footer/nav'
+import alertTip from '../../components/common/alertTip'
 import { getUserInfo } from '@/service/getData'
 import { getStore } from '@/config/mUtils'
 export default {
@@ -46,11 +51,15 @@ export default {
         headimgurl: '',
         nickname: ''
       },
+      hospital: '',
       tel: '5555',
       mydoctor: '',
+      showAlert: false,
+      alertText: null,
     }
   },
   components: {
+    alertTip,
     footNav
   },
   mounted () {
@@ -73,10 +82,17 @@ export default {
       if (res.code == 0) {
         this.patientInfo = res.data.info
         this.mydoctor = res.data.mydoctor
+        this.tel = res.data.mobile
+        this.hospital = res.data.hospitalName
+      } else {
+        this.showAlert = true
+        this.alertText = res.msg || res.message
       }
     },
+    closeTip () {
+      this.showAlert = false
+    },
     drawLine (name) {
-
       // 绘制图表
       name.setOption({
         title: {

@@ -106,6 +106,7 @@ export default {
     addPoint
   },
   created () {
+    // setStore('uid', 1)
     if (this.$route.query.user_id) {
       this.uid = this.$route.query.user_id
       setStore('uid', this.$route.query.user_id)
