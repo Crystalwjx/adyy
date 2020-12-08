@@ -110,6 +110,18 @@
   </div>
 </template>
 <script>
+const defaultForm = {
+  date: '',
+  happy: 0,
+  happyText: '',
+  mood: '',
+  drug: '',
+  diary: '',
+  time: '',
+  sport: '',
+  drink: '',
+  hasSubmit: false
+}
 import footNav from '../../components/footer/nav'
 import mytext from '../../components/common/mytext'
 import alertTip from '../../components/common/alertTip'
@@ -131,7 +143,7 @@ export default {
       charCur: 0,
       recordForm: {
         date: '',
-        happy: '',
+        happy: 0,
         happyText: '',
         mood: '',
         drug: '',
@@ -164,6 +176,7 @@ export default {
       if (res.code == 0) {
         this.dailies = res.data
         this.recordForm = this.dailies[this.currentDate]
+        this.$forceUpdate()
       } else {
         this.showAlert = true
         this.alertText = res.msg || res.message
@@ -179,10 +192,13 @@ export default {
       return y + '-' + m + '-' + d;
     },
     handleDateChange (date) {
+      this.recordForm = defaultForm
       this.recordForm.date = date
       let month = date.split('-')[1]
-      if (Object.keys(this.dailies).length && getStore('month') && month == getStore('month')) {
-        this.recordForm = this.dailies[date]
+      if (getStore('month') && month == getStore('month')) {
+        if (Object.keys(this.dailies).length) {
+          this.recordForm = this.dailies[date] ? this.dailies[date] : defaultForm
+        }
       } else {
         setStore('month', month)
         this.getData()
@@ -194,6 +210,11 @@ export default {
           }
         ]
       }
+      setTimeout(() => {
+        this.$refs.progress_btn.style.left = this.recordForm.happy + 'px'
+        this.$refs.vr_btn.style.left = this.recordForm.happy - 20 + 'px'
+        this.$refs.progress_bar.style.width = this.recordForm.happy + 'px'
+      }, 0)
     },
     async handleSubmit () {
       if (this.recordForm.drug.length > 200 || this.recordForm.diary.length > 200) {
@@ -203,32 +224,30 @@ export default {
       }
       var flag = true
       for (var i in this.recordForm) {
-        if (this.recordForm[i] === '') {
-          console.log(i)
+        if (!this.recordForm[i] && this.recordForm[i] !== false) {
           flag = false
           break
         }
       }
-      if (!flag) {
-        console.log(this.recordForm.hasSubmit)
-        // if (this.recordForm.hasSubmit) {
-        //   let response = await postRecordUpdate(1, this.currentDate, this.recordForm)
-        //   if (response.code == 0) {
-        //     this.getData()
-        //   } else {
-        //     this.showAlert = true
-        //     this.alertText = response.msg || response.message
-        //   }
-        // } else {
-        //   this.recordForm.hasSubmit = true
-        //   let res = await postRecordCreate(1, this.recordForm)
-        //   if (res.code == 0) {
-        //     this.getData()
-        //   } else {
-        //     this.showAlert = true
-        //     this.alertText = res.msg || res.message
-        //   }
-        // }
+      if (flag) {
+        if (this.recordForm.hasSubmit) {
+          let response = await postRecordUpdate(1, this.currentDate, this.recordForm)
+          if (response.code == 0) {
+            this.getData()
+          } else {
+            this.showAlert = true
+            this.alertText = response.msg || response.message
+          }
+        } else {
+          this.recordForm.hasSubmit = true
+          let res = await postRecordCreate(1, this.recordForm)
+          if (res.code == 0) {
+            this.getData()
+          } else {
+            this.showAlert = true
+            this.alertText = res.msg || res.message
+          }
+        }
       } else {
         this.showAlert = true
         this.alertText = '请填写完整记录'
