@@ -91,3 +91,18 @@ export const getKnowledgeBanner = () => fetch('/knowledge/banner');
  * 相关知识详情
  */
 export const postKnowledgeDetails = (uid, cmsItemId) => fetch('/knowledge/createpoint', { uid, cmsItemId }, 'POST');
+
+/**
+ * 获取每日记录
+ */
+export const getRecordsearch = (date, uid) => fetch('/record/search', { date, uid });
+
+/**
+ * 获取医嘱信息 Type: 1: 医生 2: 我
+ */
+export const getEnjoinList = () => fetch('/enjoin/list');
+
+/**
+ * 添加医嘱信息
+ */
+export const postEnjoinCreate = (uid, content) => fetch('/enjoin/create', { uid, content }, 'POST');
