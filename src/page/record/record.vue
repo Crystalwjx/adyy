@@ -35,7 +35,7 @@
             </div>
             <p class="text">兴奋</p>
           </div>
-          <div v-if="recordForm.hasSubmit"
+          <div v-if="!canSubmit && recordForm.hasSubmit"
                class="submitted">{{recordForm.mood}}</div>
           <mytext v-else
                   :hassubmit="canSubmit"
@@ -58,7 +58,7 @@
         <div class="item-head">感恩日记</div>
         <div class="item-detail">
           <div class="item-title">今天有没有什么人做了什么事帮助、照顾、支持、安慰、关心了你？如果有，那么把这些人和这些事写出来吧。</div>
-          <div v-if="recordForm.hasSubmit"
+          <div v-if="!canSubmit && recordForm.hasSubmit"
                class="submitted">{{recordForm.diary}}</div>
           <mytext v-else
                   :hassubmit="canSubmit"
@@ -403,6 +403,9 @@ export default {
           img.item-right {
             width: 1.024rem;
             height: 1.024rem;
+          }
+          .item-right {
+            color: #0058e3;
           }
         }
         p.text {
