@@ -568,9 +568,8 @@ export default {
     text-indent: 1.6243rem;
     margin: 0 auto;
     img {
-      width: 0.5973rem;
-      height: 0.3413rem;
-      margin-left: 0.128rem;
+      width: 1em;
+      height: 1rem;
     }
   }
   .picked-time {

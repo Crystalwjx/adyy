@@ -174,10 +174,8 @@ export default {
     async getData () {
       let res = await getRecordsearch(this.currentDate, 1)
       if (res.code == 0) {
-        if (Object.keys(res.data).length) {
-          this.dailies = res.data
-          this.$forceUpdate()
-        }
+        this.dailies = res.data
+        this.$forceUpdate()
       } else {
         this.showAlert = true
         this.alertText = res.msg || res.message
@@ -205,22 +203,22 @@ export default {
       return y + '-' + m + '-' + d;
     },
     handleDateChange (date) {
-      this.recordForm = defaultForm
-      this.recordForm.date = date
-      let month = date.split('-')[1]
-      if (getStore('month') && month == getStore('month')) {
-        if (Object.keys(this.dailies).length) {
-          this.recordForm = this.dailies[date] ? this.dailies[date] : defaultForm
-        }
-      } else {
-        setStore('month', month)
-        this.getData()
-      }
       setTimeout(() => {
-        this.$refs.progress_btn.style.left = this.recordForm.happy + 'px'
-        this.$refs.vr_btn.style.left = this.recordForm.happy - 20 + 'px'
-        this.$refs.progress_bar.style.width = this.recordForm.happy + 'px'
-      }, 0)
+        this.recordForm = defaultForm
+        this.recordForm.date = date
+        let month = date.split('-')[1]
+        if (getStore('month') && month == getStore('month')) {
+          this.recordForm = this.dailies[date] ? JSON.parse(JSON.stringify(this.dailies[date])) : defaultForm
+        } else {
+          setStore('month', month)
+          this.getData()
+        }
+        setTimeout(() => {
+          this.$refs.progress_btn.style.left = this.recordForm.happy + 'px'
+          this.$refs.vr_btn.style.left = this.recordForm.happy - 20 + 'px'
+          this.$refs.progress_bar.style.width = this.recordForm.happy + 'px'
+        }, 0)
+      }, 200)
     },
     async handleSubmit () {
       if (this.recordForm.drug.length > 200 || this.recordForm.diary.length > 200) {
@@ -277,7 +275,7 @@ export default {
           this.$refs.progress_btn.style.left = this.left + 'px'
           this.$refs.vr_btn.style.left = this.left - 20 + 'px'
           this.$refs.progress_bar.style.width = this.left + 'px'
-          this.recordForm.happyText = parseInt((this.left / this.bgwidth) * 100)
+          this.recordForm.happyText = (parseInt((this.left / this.bgwidth) * 100) - 50) / 5
           this.recordForm.happy = this.left
         }
       }

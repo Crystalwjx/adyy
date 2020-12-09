@@ -56,6 +56,7 @@ export default {
       mydoctor: '',
       showAlert: false,
       alertText: null,
+      recordsInfo: {}
     }
   },
   components: {
@@ -64,7 +65,6 @@ export default {
   },
   mounted () {
     this.initData()
-    this.showChart()
   },
   methods: {
     showChart () {
@@ -84,6 +84,8 @@ export default {
         this.mydoctor = res.data.mydoctor
         this.tel = res.data.mobile
         this.hospital = res.data.hospitalName
+        this.recordsInfo = res.data.records
+        this.showChart()
       } else {
         this.showAlert = true
         this.alertText = res.msg || res.message
@@ -110,14 +112,18 @@ export default {
               width: '2'
             }
           },
+          axisLabel: {
+            interval: 'auto',
+            rotate: this.recordsInfo.date.length > 3 ? 40 : 0
+          },
           inverse: false,
-          data: [1, 2, 3]
+          data: this.recordsInfo.date
         }],
         yAxis: [{
-          max: 5,
-          min: -5,
+          max: 10,
+          min: -10,
           type: 'value',
-          minInterval: 5,
+          minInterval: 10,
           axisLine: {
             show: false
           },
@@ -138,14 +144,21 @@ export default {
             }
           }
         }],
+        dataZoom: [{
+          type: 'inside',
+          show: true,
+          xAxisIndex: [0],
+          startValue: this.recordsInfo.date.length - 7,
+          endValue: this.recordsInfo.date.length - 1
+        }],
         grid: {
           left: "10%",
           top: "20%",
           right: "10%",
-          bottom: "12%"
+          bottom: this.recordsInfo.date.length > 3 ? "32%" : "12%"
         },
         series: [{
-          data: [-2, 3, 5],
+          data: this.recordsInfo.happyText,
           symbol: "circle",
           symbolSize: 8,
           itemStyle: {
@@ -190,7 +203,11 @@ export default {
               show: false
             }
           },
-          data: [1, 2, 3, 4, 5, 6]
+          axisLabel: {
+            interval: 'auto',
+            rotate: this.recordsInfo.date.length > 3 ? 40 : 0
+          },
+          data: this.recordsInfo.date
         }],
 
         yAxis: [{
@@ -225,10 +242,17 @@ export default {
           left: "10%",
           top: "20%",
           right: "10%",
-          bottom: "12%"
+          bottom: this.recordsInfo.date.length > 3 ? "32%" : "12%"
         },
+        dataZoom: [{
+          type: 'inside',
+          show: true,
+          xAxisIndex: [0],
+          startValue: this.recordsInfo.date.length - 7,
+          endValue: this.recordsInfo.date.length - 1
+        }],
         series: [{
-          data: [8, 9, 6, 2, 5, 7],
+          data: this.recordsInfo.time,
           symbol: "circle",
           symbolSize: 8,
           itemStyle: {
