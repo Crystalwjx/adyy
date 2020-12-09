@@ -49,7 +49,7 @@
                @click="toDetails(subitem)">
             <div class="img">
               <img v-lazy="subitem.imgurl">
-              <img v-if="subitem.linkurl"
+              <img v-if="subitem.type==1"
                    class="icon"
                    src="../../images/icon_video.png">
             </div>
@@ -60,15 +60,9 @@
       </div>
     </div>
     <player v-if="showPlayPage"
+            :imgSrc="imgSrc"
+            :musicInfo="musicInfo"
             @gotoclose="gotoclose">
-      <span slot="headTitle">测试音频</span>
-      <span slot="title">第 1 天</span>
-      <span slot="slogan">Mute</span>
-      <template slot="musicDesc">
-        <p>如果您无法表达你的想法</p>
-        <p>那只能说明你还不够了解它</p>
-        <p>－阿尔伯得。爱印寺但</p>
-      </template>
     </player>
     <foot-nav></foot-nav>
   </div>
@@ -77,7 +71,7 @@
 import { getKnowledgeList, getKnowledgeBanner } from '@/service/getData'
 import footNav from '../../components/footer/nav'
 import player from '../../components/common/player'
-import { getStore } from '@/config/mUtils'
+import { setStore, getStore } from '@/config/mUtils'
 export default {
   data () {
     return {
@@ -112,6 +106,8 @@ export default {
         refreshImg: 'arrow.png'
       },
       showPlayPage: false,
+      imgSrc: '',
+      musicInfo: null,
     }
   },
   components: {
@@ -119,6 +115,7 @@ export default {
     player
   },
   created () {
+    setStore('uid', 1)
     if (document.querySelector('.down-tip')) {
       // 获取不同手机的物理像素（dpr）,以便适配rem
       this.defaultOffset = document.querySelector('.down-tip').clientHeight || this.defaultOffset
@@ -140,7 +137,9 @@ export default {
       }
     },
     toDetails (subitem) {
-      if (true) {
+      if (subitem.type == 3) {
+        this.imgSrc = subitem.imgurl
+        this.musicInfo = subitem.linkurl
         this.showPlayPage = true
       } else {
         this.$router.push({ name: 'relates', params: { detail: subitem } })

@@ -176,7 +176,6 @@ export default {
       if (res.code == 0) {
         if (Object.keys(res.data).length) {
           this.dailies = res.data
-          this.recordForm = this.dailies[this.currentDate]
           this.$forceUpdate()
         }
       } else {
@@ -184,6 +183,13 @@ export default {
         this.alertText = res.msg || res.message
       }
       setTimeout(() => {
+        let dates = Object.keys(this.dailies)
+        this.markDateArr = [
+          {
+            color: 'red',
+            date: dates
+          }
+        ]
         this.$refs.progress_btn.style.left = this.recordForm.happy + 'px'
         this.$refs.vr_btn.style.left = this.recordForm.happy - 20 + 'px'
         this.$refs.progress_bar.style.width = this.recordForm.happy + 'px'
@@ -209,13 +215,6 @@ export default {
       } else {
         setStore('month', month)
         this.getData()
-        let dates = Object.keys(this.dailies)
-        this.markDateArr = [
-          {
-            color: 'red',
-            date: dates
-          }
-        ]
       }
       setTimeout(() => {
         this.$refs.progress_btn.style.left = this.recordForm.happy + 'px'

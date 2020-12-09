@@ -12,14 +12,14 @@
       </section>
     </header>
     <section class="curriculum-info player-box">
-      <div>
+      <!-- <div>
         <div class="day">
           <slot name="title"></slot>
         </div>
         <div class="name">
           <slot name="slogan"></slot>
         </div>
-      </div>
+      </div> -->
       <div class="intro">
         <img :src="imgSrc"
              :style="{animationPlayState:(played?'running':'paused')}" />
@@ -100,7 +100,7 @@ export default {
       }
     }
   },
-  props: ['musicInfo', 'isCurriculum', 'imgSrc'],
+  props: ['musicInfo', 'imgSrc'],
   created () {
   },
   destroyed () {
@@ -108,8 +108,7 @@ export default {
   beforeDestroyed () {
   },
   mounted () {
-    this.curriculum = this.musicInfo
-    this.$refs.myAudio.src = this.musicInfo.media
+    this.$refs.myAudio.src = this.musicInfo
   },
   computed: {
     progressCurr () {
@@ -138,56 +137,9 @@ export default {
   },
 
   methods: {
-    // async start () {
-    //   let id = this.musicInfo.id;
-    //   let res = await postCurriculemStart(id);
-    //   console.log('curriculum.start:', id)
-    //   if (res) {
-    //     if (res.code == 0 && !res.message) {
-    //       this.play(1)
-    //       this.patientCourseId = res.data.id
-    //     } else if (res.data && res.data.redirect == 1) {
-    //       this.showAlert = true;
-    //       this.alertText = '登录信息已过期，请重新登录';
-    //       this.alertHanlder = function () {
-    //         this.$router.push('/login');
-    //         return
-    //       }
-    //       return
-    //     } else if (res.msg) {
-    //       this.showAlert = true;
-    //       this.alertText = res.msg;
-    //       return
-    //     }
-    //   }
-    // },
-
-    // async finished () {
-    //   let id = this.patientCourseId;
-    //   let res = await postCurriculemFinished(id);
-    //   console.log('curriculum.finished:', id)
-    //   if (res) {
-    //     if (res.code == 0 && !res.message) {
-    //       this.$router.replace({ path: '/encourage/curriculum/' + id })
-    //     } else if (res.data && res.data.redirect == 1) {
-    //       this.showAlert = true;
-    //       this.alertText = '登录信息已过期，请重新登录';
-    //       this.alertHanlder = function () {
-    //         this.$router.push('/login');
-    //         return
-    //       }
-    //       return
-    //     } else if (res.msg) {
-    //       this.showAlert = true;
-    //       this.alertText = res.msg;
-    //       return
-    //     }
-    //   }
-    // },
-
-    play (can) {
-      const self = this;
-      let player = self.$refs.myAudio;
+    play () {
+      const self = this
+      let player = self.$refs.myAudio
       if (!player.paused) {
         player.pause()
         this.played = false
@@ -198,19 +150,13 @@ export default {
     },
     onCanpay () {
       this.timeDuration = parseInt(this.$refs.myAudio.duration);
-      if (this.isCurriculum) {
-        this.start();
-      }
     },
     onTimeupdate: function (res) {
       this.fuck = res.target.currentTime;
       this.timeNow = parseInt(res.target.currentTime)
     },
     onEnded: function () {
-      console.log('onEnded')
-      if (this.isCurriculum) {
-        this.finished();
-      }
+      this.played = false
     },
     gotoclose () {
       this.$emit('gotoclose')
