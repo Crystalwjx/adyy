@@ -115,7 +115,6 @@ export default {
     player
   },
   created () {
-    setStore('uid', 1)
     if (document.querySelector('.down-tip')) {
       // 获取不同手机的物理像素（dpr）,以便适配rem
       this.defaultOffset = document.querySelector('.down-tip').clientHeight || this.defaultOffset

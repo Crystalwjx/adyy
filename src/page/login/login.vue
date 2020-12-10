@@ -170,6 +170,7 @@ export default {
   mounted () {
     window.addEventListener('online', this.updateOnlineStatus);
     window.addEventListener('offline', this.updateOnlineStatus);
+    document.body.addEventListener('touchstart', function (e) { })
     this.initData()
   },
   methods: {

@@ -172,7 +172,7 @@ export default {
   },
   methods: {
     async getData () {
-      let res = await getRecordsearch(this.currentDate, 1)
+      let res = await getRecordsearch(this.currentDate, getStore('uid'))
       if (res.code == 0) {
         this.dailies = res.data
         this.$forceUpdate()
@@ -235,7 +235,7 @@ export default {
       }
       if (flag) {
         if (this.recordForm.hasSubmit) {
-          let response = await postRecordUpdate(1, this.currentDate, this.recordForm)
+          let response = await postRecordUpdate(getStore('uid'), this.currentDate, this.recordForm)
           if (response.code == 0) {
             this.getData()
           } else {
@@ -244,7 +244,7 @@ export default {
           }
         } else {
           this.recordForm.hasSubmit = true
-          let res = await postRecordCreate(1, this.recordForm)
+          let res = await postRecordCreate(getStore('uid'), this.recordForm)
           if (res.code == 0) {
             this.getData()
           } else {

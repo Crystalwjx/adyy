@@ -187,6 +187,7 @@ export default {
     this.uid = getStore('uid')
     window.addEventListener('online', this.updateOnlineStatus);
     window.addEventListener('offline', this.updateOnlineStatus);
+    document.body.addEventListener('touchstart', function (e) { })
     this.initData()
   },
   methods: {

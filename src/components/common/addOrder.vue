@@ -19,6 +19,7 @@
 <script>
 import { postEnjoinCreate } from '@/service/getData'
 import alertTip from './alertTip'
+import { getStore } from '@/config/mUtils'
 
 export default {
   components: {
@@ -40,7 +41,7 @@ export default {
         this.showAlert = true
         this.alertText = '字数不能超过200'
       } else {
-        let res = await postEnjoinCreate(1, this.order)
+        let res = await postEnjoinCreate(getStore('uid'), this.order)
         if (res.code == 0) {
           this.closeDtip()
         } else {
