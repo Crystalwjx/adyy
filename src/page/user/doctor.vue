@@ -11,7 +11,7 @@
           <div class="content">
             <div class="time"
                  :class="{'newinfo': item.is_see == 0}">
-              <p>{{item.date}}{{item.day}}</p>
+              <p>{{item.date}}&emsp;{{item.day}}</p>
               <p>{{item.seeName}}</p>
             </div>
             <div class="dialog">{{item.content}}</div>
@@ -22,7 +22,7 @@
           <div class="content">
             <div class="time"
                  :class="{'newinfo': item.is_see == 0}">
-              <p>{{item.date}}{{item.day}}</p>
+              <p>{{item.date}}&emsp;{{item.day}}</p>
               <p>{{item.seeName}}</p>
             </div>
             <div class="dialog">{{item.content}}</div>
