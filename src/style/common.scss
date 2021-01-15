@@ -453,7 +453,7 @@ textarea:focus::-webkit-input-placeholder { color:transparent !important; }
   color: #fff !important;
   .calendar_content {
     background: #8E58C2;
-    padding-bottom: 0;
+    padding-bottom: 0 !important;
     .calendar_body {
       background: #8E58C2;
     }
@@ -472,8 +472,8 @@ textarea:focus::-webkit-input-placeholder { color:transparent !important; }
       .calendar_item {
         background: #8E58C2;
       }
-      .calendar_day_checked {
-        background: #CD9AFF;
+      /deep/.calendar_day_checked {
+        background: #CD9AFF !important;
       }
       /deep/.calendar_first_today {
         font-size: 0.55rem;

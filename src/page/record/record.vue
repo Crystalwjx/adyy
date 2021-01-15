@@ -428,19 +428,17 @@ export default {
         .my-button {
           width: 4.5653rem;
           height: 2rem;
-          color: #7f48b4;
+          color: #fff;
           font-size: 0.768rem;
           margin: 0.68rem auto 0;
           padding: 0.512rem 1.024rem;
-          background: #ffffff;
+          background: #7f48b4;
           box-shadow: 0px 3px 6px 3px rgba(187, 117, 255, 0.3);
           border-radius: 24px;
-          border: 1px solid #7f48b4;
           @include fz;
         }
         .my-button-disabled {
-          border: 1px solid #cccccc;
-          color: #ccc;
+          background: #ccc;
           box-shadow: 0px 0px 0px 0px;
         }
         .submitted {
