@@ -58,16 +58,24 @@ export default {
     addOrder,
     footNav
   },
-  mounted () {
-    this.getData()
-  },
   data () {
     return {
       showAlert: false,
       alertText: null,
       enjoinData: [],
+      myInterval: null,
       showOrderPage: false
     }
+  },
+  mounted () {
+    const self = this
+    self.getData()
+    this.myInterval = window.setInterval(function () {
+      self.getData()
+    }, 3000)
+  },
+  destroyed () {
+    clearInterval(this.myInterval)
   },
   methods: {
     async getData () {

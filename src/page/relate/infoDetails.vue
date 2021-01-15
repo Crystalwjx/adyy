@@ -79,7 +79,7 @@ export default {
   background: #fff;
   padding: 1.067rem 0.64rem 1.067rem 0.6826rem;
   .title {
-    color: #116d3b;
+    color: #7f48b4;
     font-size: 0.853rem;
     line-height: 1.1946rem;
     margin-bottom: 0.2133rem;

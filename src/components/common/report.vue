@@ -54,7 +54,7 @@ export default {
     box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.4);
     box-sizing: border-box;
     font-size: 0.6826rem;
-    color: #116d3b;
+    color: #7f48b4;
     overflow: hidden;
     padding: 0 0.7253rem 0 0.7253rem;
     margin-bottom: 1.353rem;
@@ -70,10 +70,10 @@ export default {
     .result-header {
       font-size: 1.024rem;
       font-weight: 500;
-      color: #116d3b;
+      color: #7f48b4;
       line-height: 1.408rem;
       text-align: center;
-      border-bottom: 1px solid #b0edcc;
+      border-bottom: 1px solid #7f48b4;
       padding-bottom: 0.3413rem;
       p {
         font-family: PingFangSC-Medium, PingFang SC;

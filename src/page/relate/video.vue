@@ -616,7 +616,7 @@ export default {
     margin-top: 1.024rem;
   }
   .option {
-    color: #116d3b;
+    color: #7f48b4;
     font-weight: 500;
     margin-bottom: 0.256rem;
   }

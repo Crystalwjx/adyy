@@ -644,7 +644,7 @@ export default {
     .result-head {
       font-size: 1.024rem;
       font-weight: 500;
-      color: #116d3b;
+      color: #7f48b4;
       height: 1.536rem;
       line-height: 1.28rem;
       margin-top: 1.3226rem;
@@ -654,11 +654,11 @@ export default {
     .result-header {
       font-size: 1.024rem;
       font-weight: 500;
-      color: #116d3b;
+      color: #7f48b4;
       line-height: 1.408rem;
       margin-top: 1.3226rem;
       text-align: center;
-      border-bottom: 1px solid #b0edcc;
+      border-bottom: 1px solid #7f48b4;
       padding-bottom: 0.3413rem;
       p {
         font-family: PingFangSC-Medium, PingFang SC;
@@ -691,7 +691,7 @@ export default {
       text-align: center;
     }
     .result-last-con {
-      color: #116d3b;
+      color: #7f48b4;
     }
     .result-last-con p:last-of-type {
       font-size: 0.853rem;

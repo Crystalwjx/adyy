@@ -67,7 +67,8 @@ export default {
       position: absolute;
       right: 0.5rem;
       bottom: 0.5rem;
-      font-size: 0.68rem;
+      color: #848484;
+      font-size: 0.6rem;
     }
   }
 }

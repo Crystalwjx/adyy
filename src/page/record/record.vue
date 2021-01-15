@@ -1,5 +1,6 @@
 <template>
   <div class="record-page">
+    <success-tip v-if="showTip" />
     <vue-hash-calendar :visible.sync="show_calendar"
                        :showTodayButton="false"
                        format="YY-MM-DD"
@@ -49,6 +50,7 @@
           <div class="item-title">今天您是否已经按时按剂量服药了？或者说有把握会按时按剂量服药？</div>
           <div v-if="recordForm.hasSubmit"
                class="submitted"
+               style="text-align: center;"
                @click="handleCheck('drug')">{{recordForm.drug || buttonText}}</div>
           <div v-else
                class="my-button"
@@ -99,6 +101,7 @@
           </div>
           <div v-if="canSubmit"
                class="my-button"
+               :class="{'my-button-disabled': hasSubmited}"
                style="width:6.186rem;margin-top: 0;"
                @click="handleSubmit">保存记录</div>
         </div>
@@ -114,7 +117,7 @@
 const defaultForm = {
   date: '',
   happy: 0,
-  happyText: '',
+  happyText: 0,
   mood: '',
   drug: '',
   diary: '',
@@ -126,10 +129,12 @@ const defaultForm = {
 import footNav from '../../components/footer/nav'
 import mytext from '../../components/common/mytext'
 import alertTip from '../../components/common/alertTip'
+import successTip from '../../components/common/successTip'
 import { setStore, getStore } from '@/config/mUtils'
 import { getRecordsearch, postRecordCreate, postRecordUpdate } from '@/service/getData'
 export default {
   components: {
+    successTip,
     alertTip,
     footNav,
     mytext
@@ -145,7 +150,7 @@ export default {
       recordForm: {
         date: '',
         happy: 0,
-        happyText: '',
+        happyText: 0,
         mood: '',
         drug: '',
         diary: '',
@@ -157,12 +162,16 @@ export default {
       buttonText: '选择',
       text: '你觉得是最近或今天的什么事情让你的心情受到了影响？',
       showAlert: false,
+      showTip: false,
       markDateArr: [],
       currentDate: null,
       dailies: {}
     }
   },
   computed: {
+    hasSubmited () {
+      return this.recordForm.mood === '' || this.recordForm.drug === '' || this.recordForm.diary === '' || this.recordForm.time === '' || this.recordForm.sport === '' || this.recordForm.drink === ''
+    },
     canSubmit () {
       return this.recordForm.date == this.currentDate
     }
@@ -227,35 +236,31 @@ export default {
         this.alertText = '字数不能超过200'
         return
       }
-      var flag = true
-      for (var i in this.recordForm) {
-        if (!this.recordForm[i] && (this.recordForm[i] !== 0 || this.recordForm[i] !== false)) {
-          flag = false
-          break
-        }
-      }
-      if (flag) {
-        if (this.recordForm.hasSubmit) {
-          let response = await postRecordUpdate(getStore('uid'), this.currentDate, this.recordForm)
-          if (response.code == 0) {
-            this.getData()
-          } else {
-            this.showAlert = true
-            this.alertText = response.msg || response.message
-          }
+      if (this.recordForm.hasSubmit) {
+        let response = await postRecordUpdate(getStore('uid'), this.currentDate, this.recordForm)
+        if (response.code == 0) {
+          this.showTip = true
+          setTimeout(() => {
+            this.showTip = false
+          }, 2000)
+          this.getData()
         } else {
-          this.recordForm.hasSubmit = true
-          let res = await postRecordCreate(getStore('uid'), this.recordForm)
-          if (res.code == 0) {
-            this.getData()
-          } else {
-            this.showAlert = true
-            this.alertText = res.msg || res.message
-          }
+          this.showAlert = true
+          this.alertText = response.msg || response.message
         }
       } else {
-        this.showAlert = true
-        this.alertText = '请填写完整记录'
+        this.recordForm.hasSubmit = true
+        let res = await postRecordCreate(getStore('uid'), this.recordForm)
+        if (res.code == 0) {
+          this.showTip = true
+          setTimeout(() => {
+            this.showTip = false
+          }, 2000)
+          this.getData()
+        } else {
+          this.showAlert = true
+          this.alertText = res.msg || res.message
+        }
       }
     },
     closeTip () {
@@ -432,6 +437,11 @@ export default {
           border-radius: 24px;
           border: 1px solid #7f48b4;
           @include fz;
+        }
+        .my-button-disabled {
+          border: 1px solid #cccccc;
+          color: #ccc;
+          box-shadow: 0px 0px 0px 0px;
         }
         .submitted {
           padding-top: 0.6rem;
