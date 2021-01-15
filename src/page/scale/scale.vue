@@ -247,7 +247,7 @@ export default {
 }
 .scalelist {
   width: 14.6346rem;
-  height: 10.24rem;
+  height: 8.75rem;
   background: rgba(255, 255, 255, 1);
   box-shadow: 0rem 0.1706rem 0.1706rem 0rem rgba(0, 0, 0, 0.2);
   border-radius: 0.768rem;
@@ -261,7 +261,7 @@ export default {
     padding-top: 1.5786rem;
   }
   .scalename {
-    font-size: 1.28rem;
+    font-size: 1.128rem;
     font-weight: 500;
     color: #7f48b4;
     font-family: PingFangSC-Medium, PingFang SC;
@@ -281,7 +281,7 @@ export default {
     font-size: 0.768rem;
     font-weight: 400;
     color: #fff;
-    margin: 1.1093rem auto 0;
+    margin: 0rem auto;
     background: #7f48b4;
     box-shadow: 0rem 0.1706rem 0.3413rem 0.128rem rgba(187, 117, 255, 0.3);
   }

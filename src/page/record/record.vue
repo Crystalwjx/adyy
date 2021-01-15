@@ -7,8 +7,6 @@
                        pickerType="date"
                        :isShowAction="false"
                        :isShowWeekView="true"
-                       markType="circle"
-                       :markDate="markDateArr"
                        @change="handleDateChange"></vue-hash-calendar>
     <ul class="record-con">
       <li class="record-item">
@@ -393,6 +391,11 @@ export default {
           width: auto;
           max-width: 0.853rem;
           position: absolute;
+        }
+        span {
+          display: block;
+          height: 1.536rem;
+          line-height: 1.536rem;
         }
       }
       .item-detail {

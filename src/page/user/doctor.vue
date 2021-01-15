@@ -121,8 +121,7 @@ export default {
         margin-right: 0.426rem;
       }
       .content {
-        width: 100%;
-        flex: 1;
+        width: calc(100vw - 3.362rem);
         font-family: PingFangSC-Medium, PingFang SC;
         border-radius: 0.768rem;
         box-shadow: 0rem 0.17rem 0.17rem 0rem rgba(0, 0, 0, 0.2);
@@ -146,6 +145,7 @@ export default {
           color: #3a3a3a;
           font-weight: 600;
           margin-top: 0.17rem;
+          word-wrap: break-word;
         }
       }
     }
