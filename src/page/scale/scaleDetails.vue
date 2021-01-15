@@ -528,14 +528,14 @@ export default {
   padding: 0 0.7253rem 0 0.7253rem;
   // margin-bottom: 1.353rem;
   .question {
-    color: #116d3b;
+    color: #3a3a3a;
     font-size: 0.9386rem;
     font-weight: 400;
     line-height: 1.408rem;
     display: flex;
     justify-content: flex-start;
-    margin-bottom: 1.1093rem;
-    margin-top: 1.792rem;
+    margin-bottom: 0.853rem;
+    margin-top: 1.152rem;
     position: relative;
     img {
       width: 1rem;
@@ -582,9 +582,9 @@ export default {
     // top: 10.1546rem;
   }
   .answer {
-    font-size: 1.024rem;
+    font-size: 0.853rem;
     font-weight: 400;
-    color: #3a3a3a;
+    color: #7f48b4;
     line-height: 1.706rem;
     display: flex;
     margin-bottom: 0.3413rem;
@@ -700,7 +700,7 @@ export default {
 }
 .radio-answer {
   .question {
-    margin-bottom: 0.9386rem;
+    margin-bottom: 0.853rem;
   }
 }
 .type-result {

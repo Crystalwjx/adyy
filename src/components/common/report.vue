@@ -45,6 +45,7 @@ export default {
   z-index: 100;
   background: #7f48b4;
   padding-top: 1.48rem;
+  overflow: auto;
   .report-con {
     width: 14.6346rem;
     background: #fff;

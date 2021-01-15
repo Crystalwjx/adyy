@@ -457,6 +457,9 @@ textarea:focus::-webkit-input-placeholder { color:transparent !important; }
       background: #8E58C2;
       color: #fff !important;
     }
+    .calendar_group {
+      background: #8E58C2;
+    }
     /deep/.calendar_group_li {
       background: #8E58C2;
       .calendar_day_checked {

@@ -11,10 +11,10 @@
                        @change="handleDateChange"></vue-hash-calendar>
     <ul class="record-con">
       <li class="record-item">
-        <div class="item-head">心情记录</div>
+        <div class="item-head"><img src="../../images/smile.png" /><span>心情记录</span></div>
         <div class="item-detail">
           <div class="item-title">请移动圆圈来描述一下今天的总体心情，右边代表兴奋，左边代表抑郁</div>
-          <div style="display:flex;align-items:center;">
+          <div style="display:flex;align-items:center;color:#5C189E;">
             <p class="text">抑郁</p>
             <div ref="progress"
                  class="progress"
@@ -44,18 +44,19 @@
         </div>
       </li>
       <li class="record-item">
-        <div class="item-head">服药情况</div>
+        <div class="item-head"><img src="../../images/pill@2x.png" /><span>服药情况</span></div>
         <div class="item-detail">
           <div class="item-title">今天您是否已经按时按剂量服药了？或者说有把握会按时按剂量服药？</div>
           <div v-if="recordForm.hasSubmit"
-               class="submitted">{{recordForm.drug}}</div>
+               class="submitted"
+               @click="handleCheck('drug')">{{recordForm.drug || buttonText}}</div>
           <div v-else
                class="my-button"
                @click="handleCheck('drug')">{{buttonText}}</div>
         </div>
       </li>
       <li class="record-item">
-        <div class="item-head">感恩日记</div>
+        <div class="item-head"><img src="../../images/appreciate@2x.png" /><span>感恩日记</span></div>
         <div class="item-detail">
           <div class="item-title">今天有没有什么人做了什么事帮助、照顾、支持、安慰、关心了你？如果有，那么把这些人和这些事写出来吧。</div>
           <div v-if="!canSubmit && recordForm.hasSubmit"
@@ -67,12 +68,12 @@
         </div>
       </li>
       <li class="record-item">
-        <div class="item-head">其他</div>
+        <div class="item-head"><img src="../../images/others@2x.png" /><span>其他</span></div>
         <div class="item-detail">
           <div class="items-bottom"
                @click="handleCheck('time')">
             <div class="item-left">感觉自己昨日大约睡了几个小时？</div>
-            <div v-if="recordForm.time"
+            <div v-if="recordForm.time||recordForm.time===0"
                  class="item-right">{{recordForm.time}}</div>
             <img v-else
                  class="item-right"
@@ -228,7 +229,7 @@ export default {
       }
       var flag = true
       for (var i in this.recordForm) {
-        if (!this.recordForm[i] && this.recordForm[i] !== false) {
+        if (!this.recordForm[i] && (this.recordForm[i] !== 0 || this.recordForm[i] !== false)) {
           flag = false
           break
         }
@@ -349,7 +350,9 @@ export default {
             console.log(value)
           }
         }).then((value) => {
-          this.buttonText = value
+          if (type == 'drug') {
+            this.buttonText = value
+          }
           this.recordForm[type] = value
         }).catch((reason) => {
           console.log('catch:', reason);
@@ -378,6 +381,14 @@ export default {
         color: #fff;
         display: flex;
         align-items: center;
+        position: relative;
+        text-indent: 1.04rem;
+        img {
+          height: 0.853rem;
+          width: auto;
+          max-width: 0.853rem;
+          position: absolute;
+        }
       }
       .item-detail {
         background: #fff;

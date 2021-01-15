@@ -11,19 +11,24 @@
         <p>积分 <span>{{patientInfo.point}}</span></p>
       </div>
     </div>
-    <div class="echart-con"
+    <div v-if="recordsInfo.length"
+         class="echart-con"
          id="chart">
 
     </div>
-    <div class="echart-con"
+    <div v-if="recordsInfo.length"
+         class="echart-con"
          id="schart">
 
     </div>
-    <div class="hospital-con">
-      <div class="item-info">医院：{{hospital}}</div>
+    <div v-if="hospital||tel||mydoctor"
+         class="hospital-con">
+      <div v-if="hospital"
+           class="item-info">医院：{{hospital}}</div>
       <div v-if="tel"
            class="item-info">电话：{{tel}}</div>
-      <div class="item-info">医生：{{mydoctor}}</div>
+      <div v-if="mydoctor"
+           class="item-info">医生：{{mydoctor}}</div>
     </div>
     <div class="button-con">
       <button class="btn-answer"
@@ -85,7 +90,9 @@ export default {
         this.tel = res.data.mobile
         this.hospital = res.data.hospitalName
         this.recordsInfo = res.data.records
-        this.showChart()
+        if (this.recordsInfo.length) {
+          this.showChart()
+        }
       } else {
         this.showAlert = true
         this.alertText = res.msg || res.message
