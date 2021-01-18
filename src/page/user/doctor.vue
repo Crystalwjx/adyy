@@ -4,7 +4,8 @@
          class="doctor-content">
       <div class="doctor-items"
            v-for="(item,index) in enjoinData"
-           :key="index">
+           :key="index"
+           :class="{'backtoup':item.seeName == '新消息'}">
         <div v-if="item.type == 1"
              class="items doctor">
           <div class="image">医</div>
@@ -148,6 +149,9 @@ export default {
           word-wrap: break-word;
         }
       }
+    }
+    .backtoup {
+      animation: backInUp none 1s;
     }
     .user {
       .image {

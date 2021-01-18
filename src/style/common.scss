@@ -362,7 +362,22 @@ Copyright (c) 2013 Daniel Eden
     -webkit-animation-name: fadeInUp;
     animation-name: fadeInUp
 }
+@keyframes backInUp {
+  0% {
+    transform: translateY(700px) scale(0.7);
+    opacity: 0.7;
+  }
 
+  80% {
+    transform: translateY(0px) scale(0.7);
+    opacity: 0.7;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
 @-webkit-keyframes fadeOutDown {
     0% {
         opacity: 1
@@ -471,13 +486,23 @@ textarea:focus::-webkit-input-placeholder { color:transparent !important; }
       background: #8E58C2;
       .calendar_item {
         background: #8E58C2;
-        .calendar_day_checked {
+        .checkeditem {
           background: #CD9AFF !important;
+          color: #fff;
         }
       }
       /deep/.calendar_first_today {
         font-size: 0.55rem;
       }
     }
+  }
+  .checkeditem {
+    background: #CD9AFF !important;
+    color: #fff;
+  }
+  .calendar_item_disable {
+    background-color: #8E58C2 !important;
+    cursor: not-allowed;
+    color: #c0c4cc;
   }
 }

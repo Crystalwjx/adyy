@@ -325,7 +325,10 @@ export default {
         let rdata = await getTestList(this.uid)
         if (rdata.data.list.length >= 1) {
           this.nextScale = false
-          this.testScaleId = rdata.data.list[0].test.id
+          this.testScaleId = rdata.data.list[0].scale.id
+          this.testId = rdata.data.list[0].test.id
+        } else {
+          this.nextScale = true
         }
         if (rdata.data.getPoint) {
           this.increasePoints = true
@@ -343,7 +346,12 @@ export default {
       this.hasCompleted = true
       this.resultStatus = 2
       this.currentIndex = 0
-      this.$router.replace({ path: '/scale/' + this.testScaleId })
+      this.resultArr = []
+      this.$nextTick(() => {
+        setStore('test_id', this.testId)
+        this.$router.replace({ path: '/scale/' + this.testScaleId })
+        this.initData()
+      })
     },
     toScale () {
       this.$router.replace('/scale')

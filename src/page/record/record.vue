@@ -4,9 +4,11 @@
     <vue-hash-calendar :visible.sync="show_calendar"
                        :showTodayButton="false"
                        format="YY-MM-DD"
+                       checkedDayClassName="checkeditem"
                        pickerType="date"
                        :isShowAction="false"
                        :isShowWeekView="true"
+                       :disabled-date="disabledDate"
                        @change="handleDateChange"></vue-hash-calendar>
     <ul class="record-con">
       <li class="record-item">
@@ -195,6 +197,13 @@ export default {
     this.getData()
   },
   methods: {
+    disabledDate (date) {
+      let timestamp = date.getTime();
+      if (timestamp > new Date().getTime()) {
+        return true
+      }
+      return false
+    },
     async getData () {
       let res = await getRecordsearch(this.currentDate, getStore('uid'))
       if (res.code == 0) {
@@ -238,9 +247,11 @@ export default {
           this.getData()
         }
         setTimeout(() => {
-          this.$refs.progress_btn.style.left = this.recordForm.happy + 'px'
-          this.$refs.vr_btn.style.left = this.recordForm.happy - 20 + 'px'
-          this.$refs.progress_bar.style.width = this.recordForm.happy + 'px'
+          if (this.$refs.progress_btn) {
+            this.$refs.progress_btn.style.left = this.recordForm.happy + 'px'
+            this.$refs.vr_btn.style.left = this.recordForm.happy - 20 + 'px'
+            this.$refs.progress_bar.style.width = this.recordForm.happy + 'px'
+          }
         }, 0)
       }, 200)
     },
