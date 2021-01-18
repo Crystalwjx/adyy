@@ -12,8 +12,10 @@
       <li class="record-item">
         <div class="item-head"><img src="../../images/smile.png" /><span>心情记录</span></div>
         <div class="item-detail">
-          <div class="item-title">请移动圆圈来描述一下今天的总体心情，右边代表兴奋，左边代表抑郁</div>
-          <div style="display:flex;align-items:center;color:#5C189E;">
+          <div class="item-title"
+               :class="{'cannot':!canSubmit&&!recordForm.hasSubmit}">请移动圆圈来描述一下今天的总体心情，右边代表兴奋，左边代表抑郁</div>
+          <div v-if="canSubmit||recordForm.hasSubmit"
+               style="display:flex;align-items:center;color:#5C189E;">
             <p class="text">抑郁</p>
             <div ref="progress"
                  class="progress"
@@ -34,37 +36,39 @@
             </div>
             <p class="text">兴奋</p>
           </div>
-          <div v-if="!canSubmit && recordForm.hasSubmit"
-               class="submitted">{{recordForm.mood}}</div>
-          <mytext v-else
+          <mytext v-if="canSubmit"
                   :hassubmit="canSubmit"
                   :inputInfo.sync="recordForm.mood"
                   :text="text" />
+          <div v-else-if="recordForm.hasSubmit"
+               class="submitted">{{recordForm.mood}}</div>
         </div>
       </li>
       <li class="record-item">
         <div class="item-head"><img src="../../images/pill@2x.png" /><span>服药情况</span></div>
         <div class="item-detail">
-          <div class="item-title">今天您是否已经按时按剂量服药了？或者说有把握会按时按剂量服药？</div>
-          <div v-if="recordForm.hasSubmit"
+          <div class="item-title"
+               :class="{'cannot':!canSubmit&&!recordForm.hasSubmit}">今天您是否已经按时按剂量服药了？或者说有把握会按时按剂量服药？</div>
+          <div v-if="canSubmit"
+               class="my-button"
+               @click="handleCheck('drug')">{{buttonText}}</div>
+          <div v-else-if="recordForm.hasSubmit"
                class="submitted"
                style="text-align: center;"
                @click="handleCheck('drug')">{{recordForm.drug || buttonText}}</div>
-          <div v-else
-               class="my-button"
-               @click="handleCheck('drug')">{{buttonText}}</div>
         </div>
       </li>
       <li class="record-item">
         <div class="item-head"><img src="../../images/appreciate@2x.png" /><span>感恩日记</span></div>
         <div class="item-detail">
-          <div class="item-title">今天有没有什么人做了什么事帮助、照顾、支持、安慰、关心了你？如果有，那么把这些人和这些事写出来吧。</div>
-          <div v-if="!canSubmit && recordForm.hasSubmit"
-               class="submitted">{{recordForm.diary}}</div>
-          <mytext v-else
+          <div class="item-title"
+               :class="{'cannot':!canSubmit&&!recordForm.hasSubmit}">今天有没有什么人做了什么事帮助、照顾、支持、安慰、关心了你？如果有，那么把这些人和这些事写出来吧。</div>
+          <mytext v-if="canSubmit"
                   :hassubmit="canSubmit"
                   :inputInfo.sync="recordForm.diary"
                   :text="text" />
+          <div v-else-if="recordForm.hasSubmit"
+               class="submitted">{{recordForm.diary}}</div>
         </div>
       </li>
       <li class="record-item">
@@ -72,8 +76,12 @@
         <div class="item-detail">
           <div class="items-bottom"
                @click="handleCheck('time')">
-            <div class="item-left">感觉自己昨日大约睡了几个小时？</div>
-            <div v-if="recordForm.time||recordForm.time===0"
+            <div class="item-left"
+                 :class="{'cannot':!canSubmit&&!recordForm.hasSubmit}">感觉自己昨日大约睡了几个小时？</div>
+            <img v-if="!canSubmit&&!recordForm.hasSubmit"
+                 class="item-right"
+                 src="../../images/cannot_arrow.png">
+            <div v-else-if="recordForm.time||recordForm.time===0"
                  class="item-right">{{recordForm.time}}</div>
             <img v-else
                  class="item-right"
@@ -81,8 +89,12 @@
           </div>
           <div class="items-bottom"
                @click="handleCheck('sport')">
-            <div class="item-left">是否运动？</div>
-            <div v-if="recordForm.sport"
+            <div class="item-left"
+                 :class="{'cannot':!canSubmit&&!recordForm.hasSubmit}">是否运动？</div>
+            <img v-if="!canSubmit&&!recordForm.hasSubmit"
+                 class="item-right"
+                 src="../../images/cannot_arrow.png">
+            <div v-else-if="recordForm.sport"
                  class="item-right">{{recordForm.sport}}</div>
             <img v-else
                  class="item-right"
@@ -90,8 +102,12 @@
           </div>
           <div class="items-bottom"
                @click="handleCheck('drink')">
-            <div class="item-left">有没有吸食咖啡、香烟、酒精、毒品等神经物质？</div>
-            <div v-if="recordForm.drink"
+            <div class="item-left"
+                 :class="{'cannot':!canSubmit&&!recordForm.hasSubmit}">有没有吸食咖啡、香烟、酒精、毒品等神经物质？</div>
+            <img v-if="!canSubmit&&!recordForm.hasSubmit"
+                 class="item-right"
+                 src="../../images/cannot_arrow.png">
+            <div v-else-if="recordForm.drink"
                  class="item-right">{{recordForm.drink}}</div>
             <img v-else
                  class="item-right"
@@ -405,6 +421,9 @@ export default {
           font-size: 0.6826rem;
           color: #3a3a3a;
           font-weight: 400;
+        }
+        .cannot {
+          color: #848484;
         }
         .items-bottom {
           font-size: 0.6826rem;
