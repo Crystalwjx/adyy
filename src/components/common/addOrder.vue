@@ -3,7 +3,8 @@
     <div class="alet_box">
       <div class="alet_option">
         <span @click="closeDtip">取消</span>
-        <span style="color:#7f48b4;font-weight:600;"
+        <span class="text"
+              :class="{'none-text':!order.length||order.length>200}"
               @click="handleSubmit">发送</span>
       </div>
       <textarea v-model="order"
@@ -32,15 +33,19 @@ export default {
       order: ''
     }
   },
+  watch: {
+    order (val) {
+      if (val.length > 200) {
+        this.order = this.order.substr(0, 200)
+      }
+    }
+  },
   mounted () {
 
   },
   methods: {
     async handleSubmit () {
-      if (this.order.length > 200) {
-        this.showAlert = true
-        this.alertText = '字数不能超过200'
-      } else {
+      if (this.order.length > 0 && this.order.length <= 200) {
         let res = await postEnjoinCreate(getStore('uid'), this.order)
         if (res.code == 0) {
           this.closeDtip()
@@ -87,6 +92,13 @@ export default {
       font-size: 0.6826rem;
       color: #777777;
       padding: 0rem 0.256rem;
+      .text {
+        color: #7f48b4;
+        font-weight: 600;
+      }
+      .none-text {
+        color: #848484;
+      }
     }
     .alet_text {
       @include wh(100%, 7.168rem);
