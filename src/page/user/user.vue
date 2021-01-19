@@ -11,12 +11,12 @@
         <p>积分 <span>{{patientInfo.point}}</span></p>
       </div>
     </div>
-    <div v-if="recordsInfo.length"
+    <div v-if="recordsInfo.date.length"
          class="echart-con"
          id="chart">
 
     </div>
-    <div v-if="recordsInfo.length"
+    <div v-if="recordsInfo.date.length"
          class="echart-con"
          id="schart">
 
@@ -61,7 +61,11 @@ export default {
       mydoctor: '',
       showAlert: false,
       alertText: null,
-      recordsInfo: {}
+      recordsInfo: {
+        date: [],
+        happyText: [],
+        time: []
+      }
     }
   },
   components: {
@@ -89,9 +93,13 @@ export default {
         this.mydoctor = res.data.mydoctor
         this.tel = res.data.mobile
         this.hospital = res.data.hospitalName
-        this.recordsInfo = res.data.records
-        if (this.recordsInfo.length) {
-          this.showChart()
+        if (!(res.data.records instanceof Array)) {
+          this.recordsInfo = res.data.records
+        }
+        if (this.recordsInfo.date.length) {
+          this.$nextTick(() => {
+            this.showChart()
+          })
         }
       } else {
         this.showAlert = true
